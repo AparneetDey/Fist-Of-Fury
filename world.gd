@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var camera := $Camera
-@onready var player := $Player
+@onready var player := $ActorsContainer/Player
 
 func _process(_delta: float) -> void:
 	if player.position.x > camera.position.x:
