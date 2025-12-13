@@ -6,9 +6,13 @@ extends CharacterBody2D
 
 @onready var animatedSprite := $AnimationPlayer
 @onready var characterSprite := $CharacterSprite
+@onready var damageEmitter := $DamageEmitter
 
 enum State { IDLE, WALK, ATTACK }
 var state := State.IDLE
+
+func _ready() -> void:
+	damageEmitter.area_entered.connect(onEmitDamage.bind())
 
 func _process(_delta: float) -> void:
 	handleMovement()
@@ -41,8 +45,10 @@ func handleAnimation() -> void:
 func flipCharacter() -> void:
 	if velocity.x > 0:
 		characterSprite.flip_h = false
+		damageEmitter.scale.x = 1
 	elif velocity.x < 0:
 		characterSprite.flip_h = true
+		damageEmitter.scale.x = -1
 	
 func canMove() -> bool:
 	return state == State.IDLE or state == State.WALK
@@ -52,3 +58,7 @@ func canAttack() -> bool:
 	
 func onActionComplete() -> void:
 	state = State.IDLE
+
+func onEmitDamage(damageReceiver : DamageReceiver) -> void:
+	damageReceiver.damageReceived.emit(damage)
+	print(damageReceiver)

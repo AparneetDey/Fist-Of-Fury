@@ -1,13 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://btwcg8x0rthlq"]
+[gd_scene load_steps=4 format=3 uid="uid://btwcg8x0rthlq"]
 
 [ext_resource type="Script" uid="uid://dwjmfxw8ud2i7" path="res://scenes/characters/character.gd" id="1_1bdar"]
 [ext_resource type="Texture2D" uid="uid://dqm0csowffk10" path="res://assets/art/characters/shadow.png" id="1_x31xa"]
+[ext_resource type="PackedScene" uid="uid://bwac1jkp25ycf" path="res://scenes/colliders/damage_emitter.tscn" id="3_e22cc"]
 
 [node name="Character" type="CharacterBody2D"]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_1bdar")
-speed = 5.0
+damage = 4
+health = 40
+speed = 35.0
 
 [node name="ShadowSprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_x31xa")
@@ -19,3 +22,7 @@ offset = Vector2(-7, 0)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="DamageEmitter" parent="." instance=ExtResource("3_e22cc")]
+
+[editable path="DamageEmitter"]
