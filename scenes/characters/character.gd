@@ -60,5 +60,5 @@ func onActionComplete() -> void:
 	state = State.IDLE
 
 func onEmitDamage(damageReceiver : DamageReceiver) -> void:
-	damageReceiver.damageReceived.emit(damage)
-	print(damageReceiver)
+	var direction = Vector2.LEFT if damageReceiver.global_position.x < position.x else Vector2.RIGHT
+	damageReceiver.damageReceived.emit(damage, direction)
