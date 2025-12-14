@@ -1,15 +1,17 @@
+class_name Character
 extends CharacterBody2D
 
 const GRAVITY := 600.0
 
-@export var damage : int
-@export var health : int
-@export var heightIntensity : float
-@export var speed : float
+@export var Damage : int
+@export var Health : int
+@export var HeightIntensity : float
+@export var Speed : float
 
 @onready var animatedSprite := $AnimationPlayer
 @onready var characterSprite := $CharacterSprite
 @onready var damageEmitter := $DamageEmitter
+@onready var damageReceiver : DamageReceiver = $DamageReceiver
 
 enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK }
 
@@ -28,6 +30,7 @@ var heightSpeed := 0.0
 
 func _ready() -> void:
 	damageEmitter.area_entered.connect(onEmitDamage.bind())
+	damageReceiver.damageReceived.connect(onReceiveDamage.bind())
 
 func _process(delta: float) -> void:
 	handleMovement()
@@ -46,14 +49,7 @@ func handleMovement() -> void:
 			state = State.WALK
 
 func handleInput() -> void:
-	var direction := Input.get_vector("left", "right", "up", "down")
-	velocity = direction*speed
-	if canAttack() and Input.is_action_just_pressed("attack"):
-		state = State.ATTACK
-	if canJump() and Input.is_action_just_pressed("jump"):
-		state = State.TAKEOFF
-	if canJumpKick() and Input.is_action_just_pressed("attack"):
-		state = State.JUMPKICK
+	pass
 	
 func handleAnimation() -> void:
 	if animatedSprite.has_animation(animMap[state]):
@@ -93,11 +89,14 @@ func onActionComplete() -> void:
 	
 func onTakeOffComplete() -> void:
 	state = State.JUMP
-	heightSpeed = heightIntensity
+	heightSpeed = HeightIntensity
 	
 func onLandComplete() -> void:
 	state = State.IDLE
 
-func onEmitDamage(damageReceiver : DamageReceiver) -> void:
+func onEmitDamage(damageReceived : DamageReceiver) -> void:
 	var direction = Vector2.LEFT if damageReceiver.global_position.x < position.x else Vector2.RIGHT
-	damageReceiver.damageReceived.emit(damage, direction)
+	damageReceived.damageReceived.emit(Damage, direction)
+	
+func onReceiveDamage(damage : int, direction : Vector2) -> void:
+	print(damage)
