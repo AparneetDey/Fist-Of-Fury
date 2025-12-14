@@ -11,7 +11,7 @@ const GRAVITY := 600.0
 @onready var characterSprite := $CharacterSprite
 @onready var damageEmitter := $DamageEmitter
 
-enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND }
+enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK }
 
 var animMap = {
 	State.IDLE: "idle",
@@ -20,6 +20,7 @@ var animMap = {
 	State.TAKEOFF: "takeoff",
 	State.JUMP: "jump",
 	State.LAND: "land",
+	State.JUMPKICK: "jumpkick",
 }
 var state := State.IDLE
 var height := 0.0
@@ -47,17 +48,19 @@ func handleMovement() -> void:
 func handleInput() -> void:
 	var direction := Input.get_vector("left", "right", "up", "down")
 	velocity = direction*speed
-	if canAttack() && Input.is_action_just_pressed("attack"):
+	if canAttack() and Input.is_action_just_pressed("attack"):
 		state = State.ATTACK
-	if canJump() && Input.is_action_just_pressed("jump"):
+	if canJump() and Input.is_action_just_pressed("jump"):
 		state = State.TAKEOFF
+	if canJumpKick() and Input.is_action_just_pressed("attack"):
+		state = State.JUMPKICK
 	
 func handleAnimation() -> void:
 	if animatedSprite.has_animation(animMap[state]):
 		animatedSprite.play(animMap[state])
 		
 func handleAirTime(delta : float) -> void:
-	if state == State.JUMP:
+	if state == State.JUMP or state==State.JUMPKICK:
 		height += heightSpeed * delta
 		if height < 0:
 			height = 0
@@ -78,6 +81,9 @@ func canMove() -> bool:
 	
 func canAttack() -> bool:
 	return state == State.IDLE or state == State.WALK
+	
+func canJumpKick() -> bool:
+	return state == State.JUMP
 	
 func canJump() -> bool:
 	return state == State.IDLE or state == State.WALK
