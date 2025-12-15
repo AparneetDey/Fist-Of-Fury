@@ -9,9 +9,6 @@
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_1bdar")
-damage = 4
-health = 40
-speed = 35.0
 
 [node name="ShadowSprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_x31xa")

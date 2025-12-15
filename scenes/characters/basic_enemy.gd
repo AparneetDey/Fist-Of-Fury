@@ -1,7 +1,9 @@
 class_name BasicEnemy
 extends Character
 
-@export var player := Player
+@export var player : Player
 
 func handleInput() -> void:
-	pass
+	if player != null and canMove():
+		var direction := (player.position - position).normalized()
+		#velocity = direction*Speed

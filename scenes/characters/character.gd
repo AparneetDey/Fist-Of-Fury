@@ -4,8 +4,9 @@ extends CharacterBody2D
 const GRAVITY := 600.0
 
 @export var Damage : int
-@export var Health : int
-@export var HeightIntensity : float
+@export var JumpIntensity : float
+@export var knockbackIntensity : float
+@export var MaxHealth : int
 @export var Speed : float
 
 @onready var animatedSprite := $AnimationPlayer
@@ -13,7 +14,7 @@ const GRAVITY := 600.0
 @onready var damageEmitter := $DamageEmitter
 @onready var damageReceiver : DamageReceiver = $DamageReceiver
 
-enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK }
+enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT }
 
 var animMap = {
 	State.IDLE: "idle",
@@ -23,14 +24,17 @@ var animMap = {
 	State.JUMP: "jump",
 	State.LAND: "land",
 	State.JUMPKICK: "jumpkick",
+	State.HURT: "hurt",
 }
 var state := State.IDLE
 var height := 0.0
 var heightSpeed := 0.0
+var currentHealth := 0
 
 func _ready() -> void:
 	damageEmitter.area_entered.connect(onEmitDamage.bind())
 	damageReceiver.damageReceived.connect(onReceiveDamage.bind())
+	currentHealth = MaxHealth
 
 func _process(delta: float) -> void:
 	handleMovement()
@@ -89,14 +93,19 @@ func onActionComplete() -> void:
 	
 func onTakeOffComplete() -> void:
 	state = State.JUMP
-	heightSpeed = HeightIntensity
+	heightSpeed = JumpIntensity
 	
 func onLandComplete() -> void:
 	state = State.IDLE
 
 func onEmitDamage(damageReceived : DamageReceiver) -> void:
-	var direction = Vector2.LEFT if damageReceiver.global_position.x < position.x else Vector2.RIGHT
+	var direction = Vector2.LEFT if damageReceived.global_position.x < position.x else Vector2.RIGHT
 	damageReceived.damageReceived.emit(Damage, direction)
 	
 func onReceiveDamage(damage : int, direction : Vector2) -> void:
-	print(damage)
+	currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
+	if currentHealth <= 0:
+		queue_free()
+	else:
+		state = State.HURT
+		velocity = direction * knockbackIntensity
