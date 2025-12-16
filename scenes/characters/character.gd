@@ -15,6 +15,7 @@ const GRAVITY := 600.0
 @onready var characterSprite := $CharacterSprite
 @onready var damageEmitter := $DamageEmitter
 @onready var damageReceiver : DamageReceiver = $DamageReceiver
+@onready var collision := $CollisionShape2D
 
 enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED }
 
@@ -109,9 +110,6 @@ func onActionComplete() -> void:
 func onTakeOffComplete() -> void:
 	state = State.JUMP
 	heightSpeed = JumpIntensity
-	
-func onLandComplete() -> void:
-	state = State.IDLE
 
 func onEmitDamage(damageReceived : DamageReceiver) -> void:
 	var hitType = DamageReceiver.HitType.NORMAL
@@ -124,7 +122,7 @@ func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.
 	currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
 	if hitType == DamageReceiver.HitType.KNOCKDOWN:
 		state = State.FALL
-		height = KnockdownIntensity
+		heightSpeed = KnockdownIntensity
 	else:
 		state = State.HURT
 	velocity = direction * KnockbackIntensity
