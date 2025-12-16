@@ -2,7 +2,6 @@ extends StaticBody2D
 
 @onready var damageReceiver := $DamageReceiver
 @onready var sprite := $Sprite2D
-@onready var timer := $Timer
 
 @export var knockbackIntensity : float
 
@@ -23,7 +22,7 @@ func _process(delta: float) -> void:
 	sprite.position = Vector2.UP * height
 	handleAirTime(delta)
 	
-func onReceiveDamage(_damage : int, direction : Vector2) -> void:
+func onReceiveDamage(_damage : int, direction : Vector2, _hitType : DamageReceiver.HitType) -> void:
 	if state == State.IDLE:
 		state = State.DESTROYED
 		sprite.frame = 1

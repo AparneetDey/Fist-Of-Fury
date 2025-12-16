@@ -15,7 +15,6 @@ const GRAVITY := 600.0
 @onready var characterSprite := $CharacterSprite
 @onready var damageEmitter := $DamageEmitter
 @onready var damageReceiver : DamageReceiver = $DamageReceiver
-@onready var collision := $CollisionShape2D
 
 enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED }
 
@@ -35,7 +34,7 @@ var state := State.IDLE
 var height := 0.0
 var heightSpeed := 0.0
 var currentHealth := 0
-var timeGrouned := Time.get_ticks_msec()
+var timeGrounded := Time.get_ticks_msec()
 
 func _ready() -> void:
 	damageEmitter.area_entered.connect(onEmitDamage.bind())
@@ -73,7 +72,7 @@ func handleAirTime(delta : float) -> void:
 			height = 0
 			if(state == State.FALL):
 				state = State.GROUNDED
-				timeGrouned = Time.get_ticks_msec()
+				timeGrounded = Time.get_ticks_msec()
 			else:
 				state = State.LAND
 			velocity = Vector2.ZERO
@@ -81,7 +80,7 @@ func handleAirTime(delta : float) -> void:
 			heightSpeed -= GRAVITY * delta
 			
 func handleGroundedTime() -> void:
-	if state == State.GROUNDED and (Time.get_ticks_msec() - timeGrouned) > DurationGrounded:
+	if state == State.GROUNDED and (Time.get_ticks_msec() - timeGrounded) > DurationGrounded:
 		state = State.LAND
 
 func flipCharacter() -> void:
@@ -111,12 +110,12 @@ func onTakeOffComplete() -> void:
 	state = State.JUMP
 	heightSpeed = JumpIntensity
 
-func onEmitDamage(damageReceived : DamageReceiver) -> void:
+func onEmitDamage(damageDealt : DamageReceiver) -> void:
 	var hitType = DamageReceiver.HitType.NORMAL
-	var direction = Vector2.LEFT if damageReceived.global_position.x < position.x else Vector2.RIGHT
+	var direction = Vector2.LEFT if damageDealt.global_position.x < position.x else Vector2.RIGHT
 	if state == State.JUMPKICK:
 		hitType = DamageReceiver.HitType.KNOCKDOWN
-	damageReceived.damageReceived.emit(Damage, direction, hitType)
+	damageDealt.damageReceived.emit(Damage, direction, hitType)
 	
 func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.HitType) -> void:
 	currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
