@@ -4,8 +4,10 @@ extends CharacterBody2D
 const GRAVITY := 600.0
 
 @export var Damage : int
+@export var DurationGrounded : int
 @export var JumpIntensity : float
-@export var knockbackIntensity : float
+@export var KnockbackIntensity : float
+@export var KnockdownIntensity : float
 @export var MaxHealth : int
 @export var Speed : float
 
@@ -14,7 +16,7 @@ const GRAVITY := 600.0
 @onready var damageEmitter := $DamageEmitter
 @onready var damageReceiver : DamageReceiver = $DamageReceiver
 
-enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT }
+enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED }
 
 var animMap = {
 	State.IDLE: "idle",
@@ -25,11 +27,14 @@ var animMap = {
 	State.LAND: "land",
 	State.JUMPKICK: "jumpkick",
 	State.HURT: "hurt",
+	State.FALL: "fall",
+	State.GROUNDED: "grounded"
 }
 var state := State.IDLE
 var height := 0.0
 var heightSpeed := 0.0
 var currentHealth := 0
+var timeGrouned := Time.get_ticks_msec()
 
 func _ready() -> void:
 	damageEmitter.area_entered.connect(onEmitDamage.bind())
@@ -41,6 +46,7 @@ func _process(delta: float) -> void:
 	handleInput()
 	handleAnimation()
 	handleAirTime(delta)
+	handleGroundedTime()
 	characterSprite.position = Vector2.UP * height
 	flipCharacter()
 	move_and_slide()
@@ -60,13 +66,22 @@ func handleAnimation() -> void:
 		animatedSprite.play(animMap[state])
 		
 func handleAirTime(delta : float) -> void:
-	if state == State.JUMP or state==State.JUMPKICK:
+	if [State.JUMP, State.JUMPKICK, State.FALL].has(state):
 		height += heightSpeed * delta
 		if height < 0:
 			height = 0
-			state = State.LAND
+			if(state == State.FALL):
+				state = State.GROUNDED
+				timeGrouned = Time.get_ticks_msec()
+			else:
+				state = State.LAND
+			velocity = Vector2.ZERO
 		else:
 			heightSpeed -= GRAVITY * delta
+			
+func handleGroundedTime() -> void:
+	if state == State.GROUNDED and (Time.get_ticks_msec() - timeGrouned) > DurationGrounded:
+		state = State.LAND
 
 func flipCharacter() -> void:
 	if velocity.x > 0:
@@ -99,13 +114,17 @@ func onLandComplete() -> void:
 	state = State.IDLE
 
 func onEmitDamage(damageReceived : DamageReceiver) -> void:
+	var hitType = DamageReceiver.HitType.NORMAL
 	var direction = Vector2.LEFT if damageReceived.global_position.x < position.x else Vector2.RIGHT
-	damageReceived.damageReceived.emit(Damage, direction)
+	if state == State.JUMPKICK:
+		hitType = DamageReceiver.HitType.KNOCKDOWN
+	damageReceived.damageReceived.emit(Damage, direction, hitType)
 	
-func onReceiveDamage(damage : int, direction : Vector2) -> void:
+func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.HitType) -> void:
 	currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
-	if currentHealth <= 0:
-		queue_free()
+	if hitType == DamageReceiver.HitType.KNOCKDOWN:
+		state = State.FALL
+		height = KnockdownIntensity
 	else:
 		state = State.HURT
-		velocity = direction * knockbackIntensity
+	velocity = direction * KnockbackIntensity

@@ -261,8 +261,6 @@ collision_mask = 9
 script = ExtResource("2_76oj4")
 Damage = 4
 JumpIntensity = 150.0
-KnockbackIntensity = 40.0
-KnockdownIntensity = 70.0
 MaxHealth = 40
 Speed = 35.0
 
