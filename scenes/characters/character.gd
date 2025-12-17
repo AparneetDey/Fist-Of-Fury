@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 const GRAVITY := 600.0
 
+@export var canRespawn : bool
 @export var Damage : int
 @export var DurationGrounded : int
 @export var JumpIntensity : float
@@ -15,8 +16,9 @@ const GRAVITY := 600.0
 @onready var characterSprite := $CharacterSprite
 @onready var damageEmitter := $DamageEmitter
 @onready var damageReceiver : DamageReceiver = $DamageReceiver
+@onready var collisionShape := $CollisionShape2D
 
-enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED }
+enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH }
 
 var animMap = {
 	State.IDLE: "idle",
@@ -28,7 +30,8 @@ var animMap = {
 	State.JUMPKICK: "jumpkick",
 	State.HURT: "hurt",
 	State.FALL: "fall",
-	State.GROUNDED: "grounded"
+	State.GROUNDED: "grounded",
+	State.DEATH: "grounded",
 }
 var state := State.IDLE
 var height := 0.0
@@ -47,6 +50,8 @@ func _process(delta: float) -> void:
 	handleAnimation()
 	handleAirTime(delta)
 	handleGroundedTime()
+	handleDeath(delta)
+	collisionShape.disabled = state == State.GROUNDED
 	characterSprite.position = Vector2.UP * height
 	flipCharacter()
 	move_and_slide()
@@ -60,6 +65,12 @@ func handleMovement() -> void:
 
 func handleInput() -> void:
 	pass
+	
+func handleDeath(delta: float) -> void:
+	if state == State.DEATH and not canRespawn:
+		modulate.a -= delta
+		if modulate.a <= 0:
+			queue_free()
 	
 func handleAnimation() -> void:
 	if animatedSprite.has_animation(animMap[state]):
@@ -81,7 +92,10 @@ func handleAirTime(delta : float) -> void:
 			
 func handleGroundedTime() -> void:
 	if state == State.GROUNDED and (Time.get_ticks_msec() - timeGrounded) > DurationGrounded:
-		state = State.LAND
+		if currentHealth <= 0:
+			state = State.DEATH
+		else:
+			state = State.LAND
 
 func flipCharacter() -> void:
 	if velocity.x > 0:
@@ -103,6 +117,9 @@ func canJumpKick() -> bool:
 func canJump() -> bool:
 	return state == State.IDLE or state == State.WALK
 	
+func canGetHurt() -> bool:
+	return [State.IDLE, State.WALK, State.TAKEOFF, State.JUMP, State.LAND].has(state)
+	
 func onActionComplete() -> void:
 	state = State.IDLE
 	
@@ -118,10 +135,11 @@ func onEmitDamage(damageDealt : DamageReceiver) -> void:
 	damageDealt.damageReceived.emit(Damage, direction, hitType)
 	
 func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.HitType) -> void:
-	currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
-	if hitType == DamageReceiver.HitType.KNOCKDOWN:
-		state = State.FALL
-		heightSpeed = KnockdownIntensity
-	else:
-		state = State.HURT
-	velocity = direction * KnockbackIntensity
+	if canGetHurt():
+		currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
+		if hitType == DamageReceiver.HitType.KNOCKDOWN or currentHealth == 0:
+			state = State.FALL
+			heightSpeed = KnockdownIntensity
+		else:
+			state = State.HURT
+		velocity = direction * KnockbackIntensity

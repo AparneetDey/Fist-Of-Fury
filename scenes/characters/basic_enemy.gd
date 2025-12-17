@@ -22,4 +22,3 @@ func onReceiveDamage(damage : int, direction : Vector2, hitType : DamageReceiver
 	super.onReceiveDamage(damage, direction, hitType)
 	if currentHealth <= 0:
 		player.freeSlot(self)
-		queue_free()

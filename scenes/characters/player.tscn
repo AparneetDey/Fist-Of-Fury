@@ -259,6 +259,7 @@ size = Vector2(8, 8)
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("2_76oj4")
+canRespawn = true
 Damage = 4
 JumpIntensity = 150.0
 KnockbackIntensity = 40.0
