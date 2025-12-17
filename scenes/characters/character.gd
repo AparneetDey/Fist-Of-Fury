@@ -139,8 +139,10 @@ func onEmitDamage(damageDealt : DamageReceiver) -> void:
 	var hitType = DamageReceiver.HitType.NORMAL
 	var currentDamage := Damage
 	var direction = Vector2.LEFT if damageDealt.global_position.x < position.x else Vector2.RIGHT
-	if state == State.JUMPKICK or attackComboIndex == animAttacks.size() - 1:
+	if state == State.JUMPKICK:
 		hitType = DamageReceiver.HitType.KNOCKDOWN
+	if attackComboIndex == animAttacks.size() - 1:
+		hitType = DamageReceiver.HitType.POWER
 		currentDamage = DamagePower
 	damageDealt.damageReceived.emit(currentDamage, direction, hitType)
 	is_last_hit_successful = true
