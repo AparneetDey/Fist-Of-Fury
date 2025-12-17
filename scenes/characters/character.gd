@@ -5,6 +5,7 @@ const GRAVITY := 600.0
 
 @export var canRespawn : bool
 @export var Damage : int
+@export var DamagePower : int
 @export var DurationGrounded : int
 @export var JumpIntensity : float
 @export var KnockbackIntensity : float
@@ -20,10 +21,10 @@ const GRAVITY := 600.0
 
 enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH }
 
-var animMap = {
+var animAttacks : Array = ["punch", "punch_alt", "kick", "round_kick"]
+var animMap : Dictionary = {
 	State.IDLE: "idle",
 	State.WALK: "walk",
-	State.ATTACK: "punch",
 	State.TAKEOFF: "takeoff",
 	State.JUMP: "jump",
 	State.LAND: "land",
@@ -33,11 +34,13 @@ var animMap = {
 	State.GROUNDED: "grounded",
 	State.DEATH: "grounded",
 }
+var attackComboIndex := 0
 var state := State.IDLE
 var height := 0.0
 var heightSpeed := 0.0
 var currentHealth := 0
 var timeGrounded := Time.get_ticks_msec()
+var is_last_hit_successful := false
 
 func _ready() -> void:
 	damageEmitter.area_entered.connect(onEmitDamage.bind())
@@ -51,7 +54,7 @@ func _process(delta: float) -> void:
 	handleAirTime(delta)
 	handleGroundedTime()
 	handleDeath(delta)
-	collisionShape.disabled = state == State.GROUNDED
+	collisionShape.disabled = isCollisionEnabled()
 	characterSprite.position = Vector2.UP * height
 	flipCharacter()
 	move_and_slide()
@@ -73,7 +76,9 @@ func handleDeath(delta: float) -> void:
 			queue_free()
 	
 func handleAnimation() -> void:
-	if animatedSprite.has_animation(animMap[state]):
+	if state == State.ATTACK:
+		animatedSprite.play(animAttacks[attackComboIndex])
+	elif animatedSprite.has_animation(animMap[state]):
 		animatedSprite.play(animMap[state])
 		
 func handleAirTime(delta : float) -> void:
@@ -117,6 +122,9 @@ func canJumpKick() -> bool:
 func canJump() -> bool:
 	return state == State.IDLE or state == State.WALK
 	
+func isCollisionEnabled() -> bool:
+	return [State.GROUNDED, State.DEATH].has(state)
+	
 func canGetHurt() -> bool:
 	return [State.IDLE, State.WALK, State.TAKEOFF, State.JUMP, State.LAND].has(state)
 	
@@ -129,13 +137,17 @@ func onTakeOffComplete() -> void:
 
 func onEmitDamage(damageDealt : DamageReceiver) -> void:
 	var hitType = DamageReceiver.HitType.NORMAL
+	var currentDamage := Damage
 	var direction = Vector2.LEFT if damageDealt.global_position.x < position.x else Vector2.RIGHT
-	if state == State.JUMPKICK:
+	if state == State.JUMPKICK or attackComboIndex == animAttacks.size() - 1:
 		hitType = DamageReceiver.HitType.KNOCKDOWN
-	damageDealt.damageReceived.emit(Damage, direction, hitType)
+		currentDamage = DamagePower
+	damageDealt.damageReceived.emit(currentDamage, direction, hitType)
+	is_last_hit_successful = true
 	
 func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.HitType) -> void:
 	if canGetHurt():
+		print(damage)
 		currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
 		if hitType == DamageReceiver.HitType.KNOCKDOWN or currentHealth == 0:
 			state = State.FALL
