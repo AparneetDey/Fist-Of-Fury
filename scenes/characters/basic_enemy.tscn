@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dmf2bs2604cr0"]
+[gd_scene load_steps=18 format=3 uid="uid://dmf2bs2604cr0"]
 
 [ext_resource type="PackedScene" uid="uid://btwcg8x0rthlq" path="res://scenes/characters/character.tscn" id="1_xsmbu"]
 [ext_resource type="Texture2D" uid="uid://duisqbp8m6x8" path="res://assets/art/characters/enemy_punk.png" id="2_dwul0"]
@@ -25,14 +25,14 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("DamageReceiver:monitorable")
+tracks/1/path = NodePath("CollateralDamageEmitter:monitoring")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_6fn6m"]
@@ -75,8 +75,8 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_kcdp1"]
 resource_name = "hurt"
-length = 0.3
-step = 0.1
+length = 0.15
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -84,31 +84,19 @@ tracks/0/path = NodePath("CharacterSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.05, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [40, 41, 42]
 }
-tracks/1/type = "value"
+tracks/1/type = "method"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("DamageReceiver:monitorable")
+tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.3),
+"times": PackedFloat32Array(0.15),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -183,11 +171,42 @@ tracks/0/keys = {
 "values": [10, 11, 12, 13, 14, 15, 16, 17]
 }
 
+[sub_resource type="Animation" id="Animation_7v0pw"]
+resource_name = "fly"
+length = 0.1
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [50]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollateralDamageEmitter:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kcdp1"]
 _data = {
 &"RESET": SubResource("Animation_dwul0"),
 &"dead": SubResource("Animation_6fn6m"),
 &"fall": SubResource("Animation_7mf7s"),
+&"fly": SubResource("Animation_7v0pw"),
 &"grounded": SubResource("Animation_wpldu"),
 &"hurt": SubResource("Animation_kcdp1"),
 &"idle": SubResource("Animation_xsmbu"),
@@ -201,13 +220,17 @@ size = Vector2(8, 6)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dwul0"]
 size = Vector2(10, 10)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wh1i7"]
+size = Vector2(6, 6)
+
 [node name="BasicEnemy" instance=ExtResource("1_xsmbu")]
 collision_layer = 4
 collision_mask = 12
 script = ExtResource("2_wh1i7")
 Damage = 2
 DurationGrounded = 1000
-KnockbackIntensity = 40.0
+FlightSpeed = 100.0
+KnockbackIntensity = 10.0
 KnockdownIntensity = 100.0
 MaxHealth = 25
 Speed = 20.0
@@ -243,5 +266,13 @@ collision_layer = 32
 position = Vector2(0, -19)
 shape = SubResource("RectangleShape2D_dwul0")
 
+[node name="CollateralDamageEmitter" parent="." index="6"]
+collision_mask = 160
+
+[node name="CollisionShape2D" parent="CollateralDamageEmitter" index="0"]
+position = Vector2(1, -12)
+shape = SubResource("RectangleShape2D_wh1i7")
+
 [editable path="DamageEmitter"]
 [editable path="DamageReceiver"]
+[editable path="CollateralDamageEmitter"]

@@ -7,6 +7,7 @@ const GRAVITY := 600.0
 @export var Damage : int
 @export var DamagePower : int
 @export var DurationGrounded : int
+@export var FlightSpeed : float
 @export var JumpIntensity : float
 @export var KnockbackIntensity : float
 @export var KnockdownIntensity : float
@@ -18,8 +19,9 @@ const GRAVITY := 600.0
 @onready var damageEmitter := $DamageEmitter
 @onready var damageReceiver : DamageReceiver = $DamageReceiver
 @onready var collisionShape := $CollisionShape2D
+@onready var collateralDamageEmitter := $CollateralDamageEmitter
 
-enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH }
+enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY }
 
 var animAttacks : Array = ["punch", "punch_alt", "kick", "round_kick"]
 var animMap : Dictionary = {
@@ -33,6 +35,7 @@ var animMap : Dictionary = {
 	State.FALL: "fall",
 	State.GROUNDED: "grounded",
 	State.DEATH: "grounded",
+	State.FLY: "fly"
 }
 var attackComboIndex := 0
 var state := State.IDLE
@@ -45,6 +48,8 @@ var is_last_hit_successful := false
 func _ready() -> void:
 	damageEmitter.area_entered.connect(onEmitDamage.bind())
 	damageReceiver.damageReceived.connect(onReceiveDamage.bind())
+	collateralDamageEmitter.area_entered.connect(onEmitCollateralDamage.bind())
+	collateralDamageEmitter.body_entered.connect(onWallHit.bind())
 	currentHealth = MaxHealth
 
 func _process(delta: float) -> void:
@@ -54,7 +59,7 @@ func _process(delta: float) -> void:
 	handleAirTime(delta)
 	handleGroundedTime()
 	handleDeath(delta)
-	collisionShape.disabled = isCollisionEnabled()
+	collisionShape.disabled = isCollisionDisabled()
 	characterSprite.position = Vector2.UP * height
 	flipCharacter()
 	move_and_slide()
@@ -122,8 +127,8 @@ func canJumpKick() -> bool:
 func canJump() -> bool:
 	return state == State.IDLE or state == State.WALK
 	
-func isCollisionEnabled() -> bool:
-	return [State.GROUNDED, State.DEATH].has(state)
+func isCollisionDisabled() -> bool:
+	return [State.GROUNDED, State.DEATH, State.FLY, State.FALL].has(state)
 	
 func canGetHurt() -> bool:
 	return [State.IDLE, State.WALK, State.TAKEOFF, State.JUMP, State.LAND].has(state)
@@ -135,16 +140,16 @@ func onTakeOffComplete() -> void:
 	state = State.JUMP
 	heightSpeed = JumpIntensity
 
-func onEmitDamage(damageDealt : DamageReceiver) -> void:
+func onEmitDamage(receiver : DamageReceiver) -> void:
 	var hitType = DamageReceiver.HitType.NORMAL
 	var currentDamage := Damage
-	var direction = Vector2.LEFT if damageDealt.global_position.x < position.x else Vector2.RIGHT
+	var direction = Vector2.LEFT if receiver.global_position.x < position.x else Vector2.RIGHT
 	if state == State.JUMPKICK:
 		hitType = DamageReceiver.HitType.KNOCKDOWN
-	if attackComboIndex == animAttacks.size() - 1:
+	if attackComboIndex == animAttacks.size() - 1 and state != State.JUMPKICK:
 		hitType = DamageReceiver.HitType.POWER
 		currentDamage = DamagePower
-	damageDealt.damageReceived.emit(currentDamage, direction, hitType)
+	receiver.damageReceived.emit(currentDamage, direction, hitType)
 	is_last_hit_successful = true
 	
 func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.HitType) -> void:
@@ -154,6 +159,20 @@ func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.
 		if hitType == DamageReceiver.HitType.KNOCKDOWN or currentHealth == 0:
 			state = State.FALL
 			heightSpeed = KnockdownIntensity
+			velocity = direction * KnockbackIntensity
+		elif hitType == DamageReceiver.HitType.POWER:
+			state = State.FLY
+			velocity = direction * FlightSpeed
 		else:
 			state = State.HURT
-		velocity = direction * KnockbackIntensity
+			velocity = direction * KnockbackIntensity
+
+func onEmitCollateralDamage(receiver : DamageReceiver) -> void:
+	if receiver != damageReceiver:
+		var direction = Vector2.LEFT if receiver.global_position.x < position.x else Vector2.RIGHT
+		receiver.damageReceived.emit(0, direction, receiver.HitType.KNOCKDOWN)
+	
+func onWallHit(_wall : AnimatableBody2D) -> void:
+	state = State.FALL
+	heightSpeed = KnockdownIntensity
+	velocity = -velocity / 2.0
