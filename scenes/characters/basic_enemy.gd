@@ -18,6 +18,13 @@ func handleInput() -> void:
 			else:
 				velocity = direction*Speed
 
+func setHeading() -> void:
+	if player != null:
+		if player.global_position.x > global_position.x:
+			heading = Vector2.RIGHT
+		else:
+			heading = Vector2.LEFT
+
 func onReceiveDamage(damage : int, direction : Vector2, hitType : DamageReceiver.HitType) -> void:
 	super.onReceiveDamage(damage, direction, hitType)
 	if currentHealth <= 0:

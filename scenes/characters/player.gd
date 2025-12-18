@@ -18,6 +18,12 @@ func handleInput() -> void:
 	if canJumpKick() and Input.is_action_just_pressed("attack"):
 		state = State.JUMPKICK
 
+func setHeading() -> void:
+	if velocity.x > 0:
+		heading = Vector2.RIGHT
+	elif velocity.x < 0:
+		heading = Vector2.LEFT
+
 func reserveSlot(enemy: BasicEnemy) -> EnemySlot:
 	var vacantSlot := enemySlots.filter(
 		func(slot: EnemySlot): return slot.isFree()

@@ -41,6 +41,7 @@ var attackComboIndex := 0
 var state := State.IDLE
 var height := 0.0
 var heightSpeed := 0.0
+var heading := Vector2.RIGHT
 var currentHealth := 0
 var timeGrounded := Time.get_ticks_msec()
 var is_last_hit_successful := false
@@ -61,6 +62,7 @@ func _process(delta: float) -> void:
 	handleDeath(delta)
 	collisionShape.disabled = isCollisionDisabled()
 	characterSprite.position = Vector2.UP * height
+	setHeading()
 	flipCharacter()
 	move_and_slide()
 
@@ -107,11 +109,14 @@ func handleGroundedTime() -> void:
 		else:
 			state = State.LAND
 
+func setHeading() -> void:
+	pass
+
 func flipCharacter() -> void:
-	if velocity.x > 0:
+	if heading == Vector2.RIGHT:
 		characterSprite.flip_h = false
 		damageEmitter.scale.x = 1
-	elif velocity.x < 0:
+	else:
 		characterSprite.flip_h = true
 		damageEmitter.scale.x = -1
 	
@@ -154,7 +159,6 @@ func onEmitDamage(receiver : DamageReceiver) -> void:
 	
 func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.HitType) -> void:
 	if canGetHurt():
-		print(damage)
 		currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
 		if hitType == DamageReceiver.HitType.KNOCKDOWN or currentHealth == 0:
 			state = State.FALL
