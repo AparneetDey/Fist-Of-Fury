@@ -45,10 +45,9 @@ y_sort_enabled = true
 position = Vector2(43, 51)
 
 [node name="Barrel" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
-position = Vector2(82, 47)
+position = Vector2(123, 46)
 
 [node name="BasicEnemy" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
-position = Vector2(15, 63)
+position = Vector2(89, 40)
 player = NodePath("../Player")
-DurationBetweenAttacks = 2000
-DurationPrepAttack = 1000
+DurationBetweenKnifeRespawn = 2000
