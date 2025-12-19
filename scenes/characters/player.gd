@@ -3,7 +3,13 @@ extends Character
 
 @onready var enemySlots : Array = $EnemySlots.get_children()
 
+func _ready() -> void:
+	super._ready()
+	animAttacks = ["punch", "punch_alt", "kick", "round_kick"]
+
 func handleInput() -> void:
+	if not canMove():
+		return
 	var direction := Input.get_vector("left", "right", "up", "down")
 	velocity = direction*Speed
 	if canAttack() and Input.is_action_just_pressed("attack"):

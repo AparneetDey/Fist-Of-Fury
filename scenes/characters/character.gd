@@ -21,9 +21,9 @@ const GRAVITY := 600.0
 @onready var collisionShape := $CollisionShape2D
 @onready var collateralDamageEmitter := $CollateralDamageEmitter
 
-enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY }
+enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK }
 
-var animAttacks : Array = ["punch", "punch_alt", "kick", "round_kick"]
+var animAttacks : Array = []
 var animMap : Dictionary = {
 	State.IDLE: "idle",
 	State.WALK: "walk",
@@ -35,7 +35,8 @@ var animMap : Dictionary = {
 	State.FALL: "fall",
 	State.GROUNDED: "grounded",
 	State.DEATH: "grounded",
-	State.FLY: "fly"
+	State.FLY: "fly",
+	State.PREP_ATTACK: "idle"
 }
 var attackComboIndex := 0
 var state := State.IDLE
@@ -58,6 +59,7 @@ func _process(delta: float) -> void:
 	handleInput()
 	handleAnimation()
 	handleAirTime(delta)
+	handlePrepAttackTime()
 	handleGroundedTime()
 	handleDeath(delta)
 	collisionShape.disabled = isCollisionDisabled()
@@ -101,7 +103,10 @@ func handleAirTime(delta : float) -> void:
 			velocity = Vector2.ZERO
 		else:
 			heightSpeed -= GRAVITY * delta
-			
+
+func handlePrepAttackTime() -> void:
+	pass
+
 func handleGroundedTime() -> void:
 	if state == State.GROUNDED and (Time.get_ticks_msec() - timeGrounded) > DurationGrounded:
 		if currentHealth <= 0:
@@ -136,7 +141,7 @@ func isCollisionDisabled() -> bool:
 	return [State.GROUNDED, State.DEATH, State.FLY, State.FALL].has(state)
 	
 func canGetHurt() -> bool:
-	return [State.IDLE, State.WALK, State.TAKEOFF, State.JUMP, State.LAND].has(state)
+	return [State.IDLE, State.WALK, State.TAKEOFF, State.JUMP, State.LAND, State.HURT, State.ATTACK].has(state)
 	
 func onActionComplete() -> void:
 	state = State.IDLE
@@ -170,6 +175,7 @@ func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.
 		else:
 			state = State.HURT
 			velocity = direction * KnockbackIntensity
+			print(velocity)
 
 func onEmitCollateralDamage(receiver : DamageReceiver) -> void:
 	if receiver != damageReceiver:
