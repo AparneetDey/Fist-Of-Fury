@@ -25,8 +25,9 @@ const GRAVITY := 600.0
 @onready var collateralDamageEmitter := $CollateralDamageEmitter
 @onready var knifeSprite := $KnifeSprite
 @onready var projectileAim : RayCast2D = $ProjectileAim
+@onready var collectibleSensor := $CollectibleSensor
 
-enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK,THROW }
+enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP }
 
 var animAttacks : Array = []
 var animMap : Dictionary = {
@@ -42,7 +43,8 @@ var animMap : Dictionary = {
 	State.DEATH: "grounded",
 	State.FLY: "fly",
 	State.PREP_ATTACK: "idle",
-	State.THROW: "throw"
+	State.THROW: "throw",
+	State.PICKUP: "pickup"
 }
 var attackComboIndex := 0
 var state := State.IDLE
@@ -128,6 +130,14 @@ func handleGroundedTime() -> void:
 		else:
 			state = State.LAND
 
+func handlePickup() -> void:
+	if canPickupCollectible():
+		var collectibleAreas : Array = collectibleSensor.get_overlapping_areas()
+		var collectible : Collectible = collectibleAreas[0]
+		if collectible.type == Collectible.Type.KNIFE and not HasKnife:
+			HasKnife = true
+		collectible.queue_free()
+
 func setHeading() -> void:
 	pass
 
@@ -157,7 +167,16 @@ func canJump() -> bool:
 	
 func canGetHurt() -> bool:
 	return [State.IDLE, State.WALK, State.TAKEOFF, State.LAND, State.HURT, State.ATTACK, State.PREP_ATTACK].has(state)
-	
+
+func canPickupCollectible() -> bool:
+	var collectibleAreas : Array = collectibleSensor.get_overlapping_areas()
+	if collectibleAreas.size() == 0:
+		return false
+	var collectible : Collectible = collectibleAreas[0]
+	if collectible.type == Collectible.Type.KNIFE and not HasKnife:
+		return true
+	return false
+
 func isCollisionDisabled() -> bool:
 	return [State.GROUNDED, State.DEATH, State.FLY, State.FALL].has(state)
 	
@@ -167,7 +186,11 @@ func onActionComplete() -> void:
 func onThrowComplete() -> void:
 	state = State.IDLE
 	HasKnife = false
-	
+
+func onPickupComplete() -> void:
+	state = State.IDLE
+	handlePickup()
+
 func onTakeOffComplete() -> void:
 	state = State.JUMP
 	heightSpeed = JumpIntensity

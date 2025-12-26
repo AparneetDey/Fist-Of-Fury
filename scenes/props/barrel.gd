@@ -32,8 +32,8 @@ func onReceiveDamage(_damage : int, direction : Vector2, _hitType : DamageReceiv
 		
 func handleAirTime(delta : float) -> void:
 	if state == State.DESTROYED:
-		height += heightSpeed * delta
 		modulate.a -= delta
+		height += heightSpeed * delta
 		if height < 0:
 			velocity = Vector2.ZERO
 			height = 0
