@@ -21,14 +21,18 @@ func _ready() -> void:
 
 func handleInput() -> void:
 	if player != null and canMove():
-		if CanRespawnKnives:
+		if CanRespawnKnives or HasKnife:
 			handleRangeAttack()
 		else:
 			handleMeleeAttack()
 
 
 func handleMeleeAttack() -> void:
-	if playerSlot == null:
+	if canPickupCollectible():
+		state = State.PICKUP
+		if playerSlot != null:
+			player.freeSlot(self)
+	elif playerSlot == null:
 		playerSlot = player.reserveSlot(self)
 		
 	if playerSlot != null:

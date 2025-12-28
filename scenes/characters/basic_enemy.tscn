@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dmf2bs2604cr0"]
+[gd_scene load_steps=23 format=3 uid="uid://dmf2bs2604cr0"]
 
 [ext_resource type="PackedScene" uid="uid://btwcg8x0rthlq" path="res://scenes/characters/character.tscn" id="1_xsmbu"]
 [ext_resource type="Texture2D" uid="uid://duisqbp8m6x8" path="res://assets/art/characters/enemy_punk.png" id="2_dwul0"]
@@ -387,36 +387,6 @@ tracks/3/keys = {
 "values": [31, 32]
 }
 
-[sub_resource type="Animation" id="Animation_wh1i7"]
-resource_name = "walk"
-length = 0.8
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [10, 11, 12, 13, 14, 15, 16, 17]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("KnifeSprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [10, 11, 12, 13, 14, 15, 16, 17]
-}
-
 [sub_resource type="Animation" id="Animation_6fn6m"]
 resource_name = "throw"
 length = 0.1
@@ -460,6 +430,79 @@ tracks/2/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_wh1i7"]
+resource_name = "walk"
+length = 0.8
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [10, 11, 12, 13, 14, 15, 16, 17]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("KnifeSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [10, 11, 12, 13, 14, 15, 16, 17]
+}
+
+[sub_resource type="Animation" id="Animation_edgux"]
+resource_name = "pickup"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [70]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("KnifeSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [70]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"onPickupComplete"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kcdp1"]
 _data = {
 &"RESET": SubResource("Animation_dwul0"),
@@ -469,6 +512,7 @@ _data = {
 &"hurt": SubResource("Animation_kcdp1"),
 &"idle": SubResource("Animation_xsmbu"),
 &"land": SubResource("Animation_enhbp"),
+&"pickup": SubResource("Animation_edgux"),
 &"punch": SubResource("Animation_cwu1o"),
 &"punch_alt": SubResource("Animation_nnnvc"),
 &"throw": SubResource("Animation_6fn6m"),
@@ -484,18 +528,19 @@ size = Vector2(10, 10)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wh1i7"]
 size = Vector2(6, 6)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kcdp1"]
+size = Vector2(3, 3)
+
 [node name="BasicEnemy" instance=ExtResource("1_xsmbu")]
 collision_layer = 4
 collision_mask = 12
 script = ExtResource("2_wh1i7")
 DurationBetweenMeleeAttack = 1500
 DurationBetweenRangeAttack = 4000
-DurationPrepMeleeAttack = 1000
-DurationPrepRangeAttack = 1000
-CanRespawnKnives = true
+DurationPrepMeleeAttack = 500
+DurationPrepRangeAttack = 2000
 Damage = 2
 DurationGrounded = 1000
-DurationBetweenKnifeRespawn = 2000
 FlightSpeed = 100.0
 KnockbackIntensity = 10.0
 KnockdownIntensity = 100.0
@@ -551,6 +596,12 @@ frame = 51
 [node name="ProjectileAim" parent="." index="8"]
 target_position = Vector2(100, 0)
 collision_mask = 2
+
+[node name="CollectibleSensor" parent="." index="9"]
+monitoring = true
+
+[node name="CollisionShape2D" parent="CollectibleSensor" index="0"]
+shape = SubResource("RectangleShape2D_kcdp1")
 
 [editable path="DamageEmitter"]
 [editable path="DamageReceiver"]
