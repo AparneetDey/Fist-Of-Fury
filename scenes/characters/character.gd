@@ -209,6 +209,7 @@ func onEmitDamage(receiver : DamageReceiver) -> void:
 	
 func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.HitType) -> void:
 	if canGetHurt():
+		CanRespawnKnives = false
 		if HasKnife:
 			HasKnife = false
 			timeSinceKnifeDismiss = Time.get_ticks_msec()

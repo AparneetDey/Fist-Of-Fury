@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://mgkt0lweijn4"]
+
+[ext_resource type="PackedScene" uid="uid://dmf2bs2604cr0" path="res://scenes/characters/basic_enemy.tscn" id="1_55rrx"]
+[ext_resource type="Texture2D" uid="uid://d32nhdbcfvddk" path="res://assets/art/characters/enemy_goon.png" id="2_jdxqa"]
+
+[node name="GoonEnemy" instance=ExtResource("1_55rrx")]
+CanRespawnKnives = true
+Damage = 1
+DurationBetweenKnifeRespawn = 2000
+MaxHealth = 20
+Speed = 30.0
+
+[node name="CharacterSprite" parent="." index="1"]
+texture = ExtResource("2_jdxqa")
+
+[editable path="DamageEmitter"]
+[editable path="DamageReceiver"]
+[editable path="CollateralDamageEmitter"]
