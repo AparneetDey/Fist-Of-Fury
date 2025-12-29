@@ -723,6 +723,7 @@ collision_mask = 137
 script = ExtResource("2_76oj4")
 Damage = 4
 DamagePower = 6
+DurationGrounded = 1000
 JumpIntensity = 150.0
 HasKnife = true
 KnockbackIntensity = 10.0

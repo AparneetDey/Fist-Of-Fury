@@ -3,12 +3,14 @@ extends Area2D
 
 const GRAVITY := 600.0
 
+@export var Damage: int
 @export var KnockdownIntensity : float
 @export var Speed : float
 @export var type : Type
 
 @onready var animationPlayer := $AnimationPlayer
 @onready var collectibleSprite := $CollectibleSprite
+@onready var damageEmitter := $DamageEmitter
 
 enum State {FALL, GROUNDED, FLY}
 enum Type {KNIFE, GUN, FOOD}
@@ -28,11 +30,14 @@ func _ready() -> void:
 	heightSpeed = KnockdownIntensity
 	if state == State.FLY:
 		velocity = direction * Speed
+		
+	damageEmitter.area_entered.connect(onEmitDamage.bind())
 
 func _process(delta: float) -> void:
 	handleFall(delta)
 	handleAnimations()
 	collectibleSprite.position = Vector2.UP * height
+	damageEmitter.position = Vector2.UP * height
 	collectibleSprite.flip_h = velocity < Vector2.ZERO
 	position += velocity * delta
 
@@ -48,3 +53,7 @@ func handleFall(delta: float) -> void:
 			state = State.GROUNDED
 		else:
 			heightSpeed -= GRAVITY * delta
+
+func onEmitDamage(receiver: DamageReceiver) -> void:
+	receiver.damageReceived.emit(Damage, direction, DamageReceiver.HitType.KNOCKDOWN)
+	queue_free()
