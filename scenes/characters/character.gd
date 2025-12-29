@@ -77,6 +77,8 @@ func _process(delta: float) -> void:
 	knifeSprite.visible = HasKnife
 	characterSprite.position = Vector2.UP * height
 	knifeSprite.position = Vector2.UP * height
+	damageEmitter.monitoring = isAttacking()
+	damageReceiver.monitorable = canGetHurt()
 	setHeading()
 	flipCharacter()
 	move_and_slide()
@@ -167,7 +169,7 @@ func canJump() -> bool:
 	return state == State.IDLE or state == State.WALK
 	
 func canGetHurt() -> bool:
-	return [State.IDLE, State.WALK, State.TAKEOFF, State.LAND, State.HURT, State.ATTACK, State.PREP_ATTACK].has(state)
+	return [State.IDLE, State.WALK, State.TAKEOFF, State.HURT, State.ATTACK, State.PREP_ATTACK].has(state)
 
 func canPickupCollectible() -> bool:
 	var collectibleAreas : Array = collectibleSensor.get_overlapping_areas()
@@ -180,6 +182,9 @@ func canPickupCollectible() -> bool:
 
 func isCollisionDisabled() -> bool:
 	return [State.GROUNDED, State.DEATH, State.FLY, State.FALL].has(state)
+
+func isAttacking() -> bool:
+	return [State.ATTACK, State.JUMPKICK].has(state)
 	
 func onActionComplete() -> void:
 	state = State.IDLE

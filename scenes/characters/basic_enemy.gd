@@ -79,7 +79,7 @@ func handlePrepAttackTime() -> void:
 		timeSinceLastMeleeAttacked = Time.get_ticks_msec()
 
 func setHeading() -> void:
-	if player != null:
+	if player != null and canMove():
 		if player.global_position.x > global_position.x:
 			heading = Vector2.RIGHT
 		else:

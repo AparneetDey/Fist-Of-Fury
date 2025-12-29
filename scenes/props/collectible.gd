@@ -32,6 +32,7 @@ func _ready() -> void:
 		velocity = direction * Speed
 		
 	damageEmitter.area_entered.connect(onEmitDamage.bind())
+	damageEmitter.body_exited.connect(onExitingScreen.bind())
 
 func _process(delta: float) -> void:
 	handleFall(delta)
@@ -57,3 +58,7 @@ func handleFall(delta: float) -> void:
 func onEmitDamage(receiver: DamageReceiver) -> void:
 	receiver.damageReceived.emit(Damage, direction, DamageReceiver.HitType.KNOCKDOWN)
 	queue_free()
+
+func onExitingScreen(_wall: AnimatableBody2D) -> void:
+	queue_free()
+	print("Exited")
