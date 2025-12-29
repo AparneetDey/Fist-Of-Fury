@@ -26,7 +26,6 @@ func handleInput() -> void:
 		else:
 			handleMeleeAttack()
 
-
 func handleMeleeAttack() -> void:
 	if canPickupCollectible():
 		state = State.PICKUP

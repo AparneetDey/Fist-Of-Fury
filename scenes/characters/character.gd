@@ -26,6 +26,7 @@ const GRAVITY := 600.0
 @onready var knifeSprite := $KnifeSprite
 @onready var projectileAim : RayCast2D = $ProjectileAim
 @onready var collectibleSensor := $CollectibleSensor
+@onready var weaponPosition := $KnifeSprite/WeaponPosition
 
 enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP }
 
@@ -144,12 +145,12 @@ func setHeading() -> void:
 func flipCharacter() -> void:
 	if heading == Vector2.RIGHT:
 		characterSprite.flip_h = false
-		knifeSprite.flip_h = false
+		knifeSprite.scale.x = 1
 		projectileAim.scale.x = 1
 		damageEmitter.scale.x = 1
 	else:
 		characterSprite.flip_h = true
-		knifeSprite.flip_h = true
+		knifeSprite.scale.x = -1
 		projectileAim.scale.x = -1
 		damageEmitter.scale.x = -1
 	
@@ -186,6 +187,9 @@ func onActionComplete() -> void:
 func onThrowComplete() -> void:
 	state = State.IDLE
 	HasKnife = false
+	var knifeGlobalPosition := Vector2(weaponPosition.global_position.x, global_position.y)
+	var knifeHeight : float = -weaponPosition.position.y
+	EntityManager.spawnCollectible.emit(Collectible.Type.KNIFE, Collectible.State.FLY, knifeGlobalPosition, heading, knifeHeight)
 
 func onPickupComplete() -> void:
 	state = State.IDLE

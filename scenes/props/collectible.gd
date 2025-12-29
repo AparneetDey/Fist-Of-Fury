@@ -21,14 +21,20 @@ var animMaps := {
 var state = State.FALL
 var height := 0.0
 var heightSpeed := 0.0
+var direction := Vector2.ZERO
+var velocity := Vector2.ZERO
 
 func _ready() -> void:
 	heightSpeed = KnockdownIntensity
+	if state == State.FLY:
+		velocity = direction * Speed
 
 func _process(delta: float) -> void:
 	handleFall(delta)
 	handleAnimations()
 	collectibleSprite.position = Vector2.UP * height
+	collectibleSprite.flip_h = velocity < Vector2.ZERO
+	position += velocity * delta
 
 func handleAnimations() -> void:
 	if animationPlayer.has_animation(animMaps[state]):
