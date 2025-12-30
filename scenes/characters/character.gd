@@ -10,8 +10,9 @@ const GRAVITY := 600.0
 @export var DurationGrounded : int
 @export var DurationBetweenKnifeRespawn : int
 @export var FlightSpeed : float
-@export var JumpIntensity : float
 @export var HasKnife : bool
+@export var HasGun : bool
+@export var JumpIntensity : float
 @export var KnockbackIntensity : float
 @export var KnockdownIntensity : float
 @export var MaxHealth : int
@@ -27,6 +28,7 @@ const GRAVITY := 600.0
 @onready var projectileAim : RayCast2D = $ProjectileAim
 @onready var collectibleSensor := $CollectibleSensor
 @onready var weaponPosition := $KnifeSprite/WeaponPosition
+@onready var gunSprite := $GunSprite
 
 enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP }
 
@@ -75,8 +77,10 @@ func _process(delta: float) -> void:
 	handleDeath(delta)
 	collisionShape.disabled = isCollisionDisabled()
 	knifeSprite.visible = HasKnife
+	gunSprite.visible = HasGun
 	characterSprite.position = Vector2.UP * height
 	knifeSprite.position = Vector2.UP * height
+	gunSprite.position = Vector2.UP * height
 	damageEmitter.monitoring = isAttacking()
 	damageReceiver.monitorable = canGetHurt()
 	setHeading()
@@ -148,11 +152,13 @@ func flipCharacter() -> void:
 	if heading == Vector2.RIGHT:
 		characterSprite.flip_h = false
 		knifeSprite.scale.x = 1
+		gunSprite.scale.x = 1
 		projectileAim.scale.x = 1
 		damageEmitter.scale.x = 1
 	else:
 		characterSprite.flip_h = true
 		knifeSprite.scale.x = -1
+		gunSprite.scale.x = -1
 		projectileAim.scale.x = -1
 		damageEmitter.scale.x = -1
 	
@@ -222,6 +228,8 @@ func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.
 		if HasKnife:
 			HasKnife = false
 			timeSinceKnifeDismiss = Time.get_ticks_msec()
+		if HasGun:
+			HasGun = false
 		currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
 		if hitType == DamageReceiver.HitType.KNOCKDOWN or currentHealth == 0:
 			state = State.FALL

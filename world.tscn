@@ -47,6 +47,8 @@ script = ExtResource("3_gbfbk")
 
 [node name="Player" parent="ActorsContainer" instance=ExtResource("2_fj7yv")]
 position = Vector2(43, 51)
+HasKnife = false
+HasGun = true
 
 [node name="Barrel" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
 position = Vector2(123, 46)
