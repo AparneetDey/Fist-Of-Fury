@@ -21,7 +21,7 @@ func _ready() -> void:
 
 func handleInput() -> void:
 	if player != null and canMove():
-		if CanRespawnKnives or HasKnife:
+		if CanRespawnKnives or HasKnife or HasGun:
 			handleRangeAttack()
 		else:
 			handleMeleeAttack()
@@ -65,18 +65,28 @@ func handleRangeAttack() -> void:
 	else:
 		velocity = (closestDestination - position).normalized() * Speed
 		
-	if canThrow() and HasKnife and projectileAim.is_colliding():
+	if canRangeAttack() and HasKnife and projectileAim.is_colliding():
 		state = State.THROW
 		timeSinceLastRangeAttacked = Time.get_ticks_msec()
 		timeOfPrepRangeAttack = Time.get_ticks_msec()
 		timeSinceKnifeDismiss = Time.get_ticks_msec()
-
+	
+	if canRangeAttack() and HasGun and projectileAim.is_colliding():
+		state = State.PREP_SHOOT
+		timeOfPrepRangeAttack = Time.get_ticks_msec()
 
 func handlePrepAttackTime() -> void:
 	if state == State.PREP_ATTACK and (Time.get_ticks_msec() - timeOfPrepMeleeAttack) > DurationPrepMeleeAttack:
 		state = State.ATTACK
 		animAttacks.shuffle()
 		timeSinceLastMeleeAttacked = Time.get_ticks_msec()
+
+func handlePrepShootTime() -> void:
+	if state == State.PREP_SHOOT and (Time.get_ticks_msec() - timeOfPrepRangeAttack) > DurationBetweenRangeAttack:
+		handleGunShot()
+		velocity = Vector2.ZERO
+		timeSinceLastRangeAttacked = Time.get_ticks_msec()
+
 
 func setHeading() -> void:
 	if player != null and canMove():
@@ -98,7 +108,7 @@ func canAttack() -> bool:
 		return false
 	return super.canAttack()
 
-func canThrow() -> bool:
+func canRangeAttack() -> bool:
 	if (Time.get_ticks_msec() - timeSinceLastRangeAttacked) < DurationBetweenRangeAttack:
 		return false
 	return super.canAttack()

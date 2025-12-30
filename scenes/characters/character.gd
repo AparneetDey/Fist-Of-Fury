@@ -6,6 +6,7 @@ const GRAVITY := 600.0
 @export var CanRespawn : bool
 @export var CanRespawnKnives : bool
 @export var Damage : int
+@export var DamageShot : int
 @export var DamagePower : int
 @export var DurationGrounded : int
 @export var DurationBetweenKnifeRespawn : int
@@ -30,7 +31,7 @@ const GRAVITY := 600.0
 @onready var weaponPosition := $KnifeSprite/WeaponPosition
 @onready var gunSprite := $GunSprite
 
-enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP }
+enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP, SHOOT, PREP_SHOOT }
 
 var animAttacks : Array = []
 var animMap : Dictionary = {
@@ -47,7 +48,9 @@ var animMap : Dictionary = {
 	State.FLY: "fly",
 	State.PREP_ATTACK: "idle",
 	State.THROW: "throw",
-	State.PICKUP: "pickup"
+	State.PICKUP: "pickup",
+	State.SHOOT: "shoot",
+	State.PREP_SHOOT: "idle"
 }
 var attackComboIndex := 0
 var state := State.IDLE
@@ -72,6 +75,7 @@ func _process(delta: float) -> void:
 	handleAnimation()
 	handleAirTime(delta)
 	handlePrepAttackTime()
+	handlePrepShootTime()
 	handleKnifeRespawn()
 	handleGroundedTime()
 	handleDeath(delta)
@@ -126,6 +130,9 @@ func handleAirTime(delta : float) -> void:
 func handlePrepAttackTime() -> void:
 	pass
 
+func handlePrepShootTime() -> void:
+	pass
+
 func handleKnifeRespawn() -> void:
 	if CanRespawnKnives and not HasKnife and (Time.get_ticks_msec() - timeSinceKnifeDismiss) > DurationBetweenKnifeRespawn:
 		HasKnife = true
@@ -144,6 +151,19 @@ func handlePickup() -> void:
 		if collectible.type == Collectible.Type.KNIFE and not HasKnife:
 			HasKnife = true
 		collectible.queue_free()
+
+func handleGunShot() -> void:
+	state = State.SHOOT
+	velocity = Vector2.ZERO
+	var weaponRootPosition = Vector2(weaponPosition.global_position.x, global_position.y)
+	var gunHeight = -weaponPosition.position.y
+	var targetDistance = heading * (global_position.x + get_viewport_rect().size.x)
+	var target = projectileAim.get_collider()
+	if target != null:
+		targetDistance = projectileAim.get_collision_point()
+		target.onReceiveDamage(DamageShot, heading, DamageReceiver.HitType.KNOCKDOWN)
+	var distance : float = targetDistance.x - weaponPosition.position.x
+	EntityManager.spawnShot.emit(weaponRootPosition, distance, gunHeight)
 
 func setHeading() -> void:
 	pass
@@ -175,7 +195,7 @@ func canJump() -> bool:
 	return state == State.IDLE or state == State.WALK
 	
 func canGetHurt() -> bool:
-	return [State.IDLE, State.WALK, State.TAKEOFF, State.HURT, State.ATTACK, State.PREP_ATTACK].has(state)
+	return [State.IDLE, State.WALK, State.TAKEOFF, State.HURT, State.ATTACK, State.PREP_ATTACK, State.PREP_SHOOT].has(state)
 
 func canPickupCollectible() -> bool:
 	var collectibleAreas : Array = collectibleSensor.get_overlapping_areas()

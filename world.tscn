@@ -56,6 +56,7 @@ position = Vector2(123, 46)
 [node name="BasicEnemy" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
 position = Vector2(89, 40)
 player = NodePath("../Player")
+HasGun = true
 
 [node name="Knife" parent="ActorsContainer" instance=ExtResource("6_dwbse")]
 position = Vector2(29, 52)
@@ -64,3 +65,5 @@ Speed = 0.0
 [node name="GoonEnemy" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("7_pkg7o")]
 position = Vector2(85, 54)
 player = NodePath("../Player")
+CanRespawnKnives = false
+HasGun = true
