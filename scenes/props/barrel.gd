@@ -1,9 +1,10 @@
 extends StaticBody2D
 
+@export var contentType : Collectible.Type
+@export var knockbackIntensity : float
+
 @onready var damageReceiver := $DamageReceiver
 @onready var sprite := $Sprite2D
-
-@export var knockbackIntensity : float
 
 enum State { IDLE, DESTROYED }
 
@@ -28,7 +29,8 @@ func onReceiveDamage(_damage : int, direction : Vector2, _hitType : DamageReceiv
 		sprite.frame = 1
 		heightSpeed = knockbackIntensity * 2
 		velocity = direction * knockbackIntensity
-		
+		EntityManager.spawnCollectible.emit(contentType, Collectible.State.FALL, global_position, Vector2.ZERO, 0.0, false)
+
 		
 func handleAirTime(delta : float) -> void:
 	if state == State.DESTROYED:

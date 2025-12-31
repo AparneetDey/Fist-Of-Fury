@@ -711,6 +711,7 @@ FlightSpeed = 100.0
 KnockbackIntensity = 10.0
 KnockdownIntensity = 100.0
 MaxHealth = 30
+MaxAmmoPerGun = 0
 Speed = 25.0
 
 [node name="CharacterSprite" parent="." index="1"]

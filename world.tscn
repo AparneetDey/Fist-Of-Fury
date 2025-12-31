@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ep7wwvmdr21f"]
+[gd_scene load_steps=10 format=3 uid="uid://ep7wwvmdr21f"]
 
 [ext_resource type="PackedScene" uid="uid://cwxa520uqekpk" path="res://scenes/stages/stage.tscn" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://cr5g31el14cu6" path="res://world.gd" id="1_tlwt5"]
@@ -6,9 +6,8 @@
 [ext_resource type="Script" uid="uid://mapq5he1kidy" path="res://scenes/stages/actors_container.gd" id="3_gbfbk"]
 [ext_resource type="PackedScene" uid="uid://bpgrtmwe4k3n4" path="res://scenes/props/barrel.tscn" id="4_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://dmf2bs2604cr0" path="res://scenes/characters/basic_enemy.tscn" id="5_036b0"]
-[ext_resource type="PackedScene" uid="uid://ch2r14gludrpe" path="res://scenes/props/knife.tscn" id="6_dwbse"]
+[ext_resource type="PackedScene" uid="uid://c4ad0806f8smx" path="res://scenes/characters/thug_enemy.tscn" id="6_gbfbk"]
 [ext_resource type="PackedScene" uid="uid://mgkt0lweijn4" path="res://scenes/characters/goon_enemy.tscn" id="7_pkg7o"]
-[ext_resource type="PackedScene" uid="uid://clvfewg1xrw4b" path="res://scenes/props/gun.tscn" id="9_ioo17"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tlwt5"]
 size = Vector2(6, 64)
@@ -48,28 +47,22 @@ script = ExtResource("3_gbfbk")
 
 [node name="Player" parent="ActorsContainer" instance=ExtResource("2_fj7yv")]
 position = Vector2(43, 51)
-HasGun = true
 
 [node name="Barrel" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
 position = Vector2(123, 46)
 
-[node name="BasicEnemy" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
-position = Vector2(89, 40)
-player = NodePath("../Player")
-HasGun = true
-MaxAmmoPerGun = 0
+[node name="Barrel2" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(64, 65)
+contentType = 1
 
-[node name="Knife" parent="ActorsContainer" instance=ExtResource("6_dwbse")]
-position = Vector2(29, 52)
-Speed = 0.0
+[node name="ThugEnemy" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("6_gbfbk")]
+position = Vector2(-6, 57)
+player = NodePath("../Player")
 
 [node name="GoonEnemy" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("7_pkg7o")]
-position = Vector2(85, 54)
+position = Vector2(91, 38)
 player = NodePath("../Player")
-DurationBetweenRangeAttack = 4000
-CanRespawnKnives = false
-HasGun = true
-MaxAmmoPerGun = 0
 
-[node name="Gun" parent="ActorsContainer" instance=ExtResource("9_ioo17")]
-position = Vector2(15, 35)
+[node name="BasicEnemy" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(90, 75)
+player = NodePath("../Player")

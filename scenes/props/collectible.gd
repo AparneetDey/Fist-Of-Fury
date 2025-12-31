@@ -52,6 +52,8 @@ func handleAnimations() -> void:
 func handleFall(delta: float) -> void:
 	if state == State.FALL:
 		height += heightSpeed * delta
+		if AutoDestroy:
+			modulate.a -= delta
 		if height < 0:
 			height = 0
 			state = State.GROUNDED
