@@ -48,6 +48,7 @@ script = ExtResource("3_gbfbk")
 
 [node name="Player" parent="ActorsContainer" instance=ExtResource("2_fj7yv")]
 position = Vector2(43, 51)
+HasGun = true
 
 [node name="Barrel" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
 position = Vector2(123, 46)
@@ -56,6 +57,7 @@ position = Vector2(123, 46)
 position = Vector2(89, 40)
 player = NodePath("../Player")
 HasGun = true
+MaxAmmoPerGun = 0
 
 [node name="Knife" parent="ActorsContainer" instance=ExtResource("6_dwbse")]
 position = Vector2(29, 52)
@@ -67,6 +69,7 @@ player = NodePath("../Player")
 DurationBetweenRangeAttack = 4000
 CanRespawnKnives = false
 HasGun = true
+MaxAmmoPerGun = 0
 
 [node name="Gun" parent="ActorsContainer" instance=ExtResource("9_ioo17")]
 position = Vector2(15, 35)

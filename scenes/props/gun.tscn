@@ -106,6 +106,9 @@ libraries = {
 }
 autoplay = "fall"
 
+[node name="DamageEmitter" parent="." index="4"]
+collision_mask = 176
+
 [node name="CollisionShape2D" parent="DamageEmitter" index="0"]
 shape = SubResource("RectangleShape2D_ssks3")
 

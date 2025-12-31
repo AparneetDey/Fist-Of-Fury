@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 const GRAVITY := 600.0
 
+@export var AutoDestroyOnDrop : bool
 @export var CanRespawn : bool
 @export var CanRespawnKnives : bool
 @export var Damage : int
@@ -17,6 +18,7 @@ const GRAVITY := 600.0
 @export var KnockbackIntensity : float
 @export var KnockdownIntensity : float
 @export var MaxHealth : int
+@export var MaxAmmoPerGun: int
 @export var Speed : float
 
 @onready var animatedSprite := $AnimationPlayer
@@ -61,6 +63,7 @@ var currentHealth := 0
 var timeGrounded := Time.get_ticks_msec()
 var timeSinceKnifeDismiss := Time.get_ticks_msec()
 var is_last_hit_successful := false
+var ammoLeft := 0
 
 func _ready() -> void:
 	damageEmitter.area_entered.connect(onEmitDamage.bind())
@@ -152,6 +155,7 @@ func handlePickup() -> void:
 			HasKnife = true
 		if collectible.type == Collectible.Type.GUN and not isCarryingWeapon():
 			HasGun = true
+			ammoLeft = MaxAmmoPerGun
 		collectible.queue_free()
 
 func handleGunShot() -> void:
@@ -224,10 +228,15 @@ func onActionComplete() -> void:
 
 func onThrowComplete() -> void:
 	state = State.IDLE
-	HasKnife = false
-	var knifeGlobalPosition := Vector2(weaponPosition.global_position.x, global_position.y)
-	var knifeHeight : float = -weaponPosition.position.y
-	EntityManager.spawnCollectible.emit(Collectible.Type.KNIFE, Collectible.State.FLY, knifeGlobalPosition, heading, knifeHeight)
+	var collectibleType := Collectible.Type.KNIFE
+	if HasGun:
+		collectibleType = Collectible.Type.GUN
+		HasGun = false
+	else:
+		HasKnife = false
+	var collectibleGlobalPosition := Vector2(weaponPosition.global_position.x, global_position.y)
+	var collectibleHeight : float = -weaponPosition.position.y
+	EntityManager.spawnCollectible.emit(collectibleType, Collectible.State.FLY, collectibleGlobalPosition, heading, collectibleHeight, false)
 
 func onPickupComplete() -> void:
 	state = State.IDLE
@@ -255,10 +264,10 @@ func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.
 		if HasKnife:
 			HasKnife = false
 			timeSinceKnifeDismiss = Time.get_ticks_msec()
-			EntityManager.spawnCollectible.emit(Collectible.Type.KNIFE, Collectible.State.FALL, global_position, Vector2.ZERO, 0.0)
+			EntityManager.spawnCollectible.emit(Collectible.Type.KNIFE, Collectible.State.FALL, global_position, Vector2.ZERO, 0.0, AutoDestroyOnDrop)
 		if HasGun:
 			HasGun = false
-			EntityManager.spawnCollectible.emit(Collectible.Type.GUN, Collectible.State.FALL, global_position, Vector2.ZERO, 0.0)
+			EntityManager.spawnCollectible.emit(Collectible.Type.GUN, Collectible.State.FALL, global_position, Vector2.ZERO, 0.0, AutoDestroyOnDrop)
 		currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
 		if hitType == DamageReceiver.HitType.KNOCKDOWN or currentHealth == 0:
 			state = State.FALL

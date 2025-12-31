@@ -15,7 +15,11 @@ func handleInput() -> void:
 		if HasKnife:
 			state = State.THROW
 		elif HasGun:
-			handleGunShot()
+			if ammoLeft > 0:
+				handleGunShot()
+				ammoLeft -= 1
+			else:
+				state = State.THROW
 		else:
 			if canPickupCollectible():
 				state = State.PICKUP

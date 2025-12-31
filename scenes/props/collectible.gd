@@ -3,6 +3,7 @@ extends Area2D
 
 const GRAVITY := 600.0
 
+@export var AutoDestroy: bool
 @export var Damage: int
 @export var KnockdownIntensity : float
 @export var Speed : float
@@ -54,6 +55,8 @@ func handleFall(delta: float) -> void:
 		if height < 0:
 			height = 0
 			state = State.GROUNDED
+			if AutoDestroy:
+				queue_free()
 		else:
 			heightSpeed -= GRAVITY * delta
 
@@ -63,4 +66,3 @@ func onEmitDamage(receiver: DamageReceiver) -> void:
 
 func onExitingScreen(_wall: AnimatableBody2D) -> void:
 	queue_free()
-	print("Exited")

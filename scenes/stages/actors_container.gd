@@ -10,12 +10,13 @@ func _ready() -> void:
 	EntityManager.spawnCollectible.connect(onCollectibleSpawn.bind())
 	EntityManager.spawnShot.connect(onShotSpawn.bind())
 
-func onCollectibleSpawn(type: Collectible.Type, initialState: Collectible.State, collectibleGlobalPosition: Vector2, collectibleDirection: Vector2, collectibleHeight: float) -> void:
+func onCollectibleSpawn(type: Collectible.Type, initialState: Collectible.State, collectibleGlobalPosition: Vector2, collectibleDirection: Vector2, collectibleHeight: float, autoDestroy: bool) -> void:
 	var collectible : Collectible = PREFABMAP[type].instantiate()
 	collectible.state = initialState
 	collectible.global_position = collectibleGlobalPosition
 	collectible.direction = collectibleDirection
 	collectible.height = collectibleHeight
+	collectible.AutoDestroy = autoDestroy
 	call_deferred("add_child", collectible)
 
 func onShotSpawn(gunRootPosition: Vector2, distanceTravelled: float, height: float) -> void:
