@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://d32nhdbcfvddk" path="res://assets/art/characters/enemy_goon.png" id="2_jdxqa"]
 
 [node name="GoonEnemy" instance=ExtResource("1_55rrx")]
+DurationBetweenRangeAttack = 4000
 CanRespawnKnives = true
 Damage = 1
 DurationBetweenKnifeRespawn = 2000

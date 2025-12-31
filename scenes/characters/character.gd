@@ -157,9 +157,7 @@ func handlePickup() -> void:
 			HasGun = true
 			ammoLeft = MaxAmmoPerGun
 		if collectible.type == Collectible.Type.FOOD:
-			print(currentHealth)
 			currentHealth = MaxHealth
-			print(currentHealth)
 		collectible.queue_free()
 
 func handleGunShot() -> void:
@@ -269,6 +267,7 @@ func onEmitDamage(receiver : DamageReceiver) -> void:
 func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.HitType) -> void:
 	if canGetHurt():
 		CanRespawnKnives = false
+		attackComboIndex = 0
 		if HasKnife:
 			HasKnife = false
 			timeSinceKnifeDismiss = Time.get_ticks_msec()
