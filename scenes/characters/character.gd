@@ -3,23 +3,28 @@ extends CharacterBody2D
 
 const GRAVITY := 600.0
 
-@export var AutoDestroyOnDrop : bool
 @export var CanRespawn : bool
-@export var CanRespawnKnives : bool
 @export var Damage : int
-@export var DamageShot : int
-@export var DamagePower : int
+@export var MaxHealth : int
+
+
+@export_group("Movement")
 @export var DurationGrounded : int
-@export var DurationBetweenKnifeRespawn : int
 @export var FlightSpeed : float
-@export var HasKnife : bool
-@export var HasGun : bool
 @export var JumpIntensity : float
 @export var KnockbackIntensity : float
 @export var KnockdownIntensity : float
-@export var MaxHealth : int
-@export var MaxAmmoPerGun: int
 @export var Speed : float
+
+@export_group("Weapon")
+@export var AutoDestroyOnDrop : bool
+@export var CanRespawnKnives : bool
+@export var DamageShot : int
+@export var DamagePower : int
+@export var DurationBetweenKnifeRespawn : int
+@export var HasKnife : bool
+@export var HasGun : bool
+@export var MaxAmmoPerGun: int
 
 @onready var animatedSprite := $AnimationPlayer
 @onready var characterSprite := $CharacterSprite
@@ -33,7 +38,7 @@ const GRAVITY := 600.0
 @onready var weaponPosition := $KnifeSprite/WeaponPosition
 @onready var gunSprite := $GunSprite
 
-enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP, SHOOT, PREP_SHOOT }
+enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP, SHOOT, PREP_SHOOT, RECOVER }
 
 var animAttacks : Array = []
 var animMap : Dictionary = {
@@ -52,7 +57,8 @@ var animMap : Dictionary = {
 	State.THROW: "throw",
 	State.PICKUP: "pickup",
 	State.SHOOT: "shoot",
-	State.PREP_SHOOT: "idle"
+	State.PREP_SHOOT: "idle",
+	State.RECOVER: "recover"
 }
 var attackComboIndex := 0
 var state := State.IDLE
@@ -90,6 +96,7 @@ func _process(delta: float) -> void:
 	gunSprite.position = Vector2.UP * height
 	damageEmitter.monitoring = isAttacking()
 	damageReceiver.monitorable = canGetHurt()
+	collateralDamageEmitter.monitoring = state == State.FLY
 	setHeading()
 	flipCharacter()
 	move_and_slide()
