@@ -73,6 +73,7 @@ func handleRangeAttack() -> void:
 	
 	if canRangeAttack() and HasGun and projectileAim.is_colliding():
 		state = State.PREP_SHOOT
+		velocity = Vector2.ZERO
 		timeOfPrepRangeAttack = Time.get_ticks_msec()
 
 func handlePrepAttackTime() -> void:
@@ -82,9 +83,8 @@ func handlePrepAttackTime() -> void:
 		timeSinceLastMeleeAttacked = Time.get_ticks_msec()
 
 func handlePrepShootTime() -> void:
-	if state == State.PREP_SHOOT and (Time.get_ticks_msec() - timeOfPrepRangeAttack) > DurationBetweenRangeAttack:
+	if state == State.PREP_SHOOT and (Time.get_ticks_msec() - timeOfPrepRangeAttack) > DurationPrepRangeAttack:
 		handleGunShot()
-		velocity = Vector2.ZERO
 		timeSinceLastRangeAttacked = Time.get_ticks_msec()
 
 

@@ -39,6 +39,8 @@ func _process(delta: float) -> void:
 	handleAnimations()
 	collectibleSprite.position = Vector2.UP * height
 	damageEmitter.position = Vector2.UP * height
+	monitorable = state == State.GROUNDED
+	damageEmitter.monitoring = state == State.FLY
 	collectibleSprite.flip_h = velocity < Vector2.ZERO
 	position += velocity * delta
 

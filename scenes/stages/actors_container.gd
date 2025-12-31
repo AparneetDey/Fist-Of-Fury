@@ -2,7 +2,8 @@ extends Node2D
 
 const SHOTPREFAB := preload("res://scenes/props/shot.tscn")
 const PREFABMAP := {
-	Collectible.Type.KNIFE: preload("res://scenes/props/knife.tscn")
+	Collectible.Type.KNIFE: preload("res://scenes/props/knife.tscn"),
+	Collectible.Type.GUN: preload("res://scenes/props/gun.tscn")
 }
 
 func _ready() -> void:
@@ -15,7 +16,7 @@ func onCollectibleSpawn(type: Collectible.Type, initialState: Collectible.State,
 	collectible.global_position = collectibleGlobalPosition
 	collectible.direction = collectibleDirection
 	collectible.height = collectibleHeight
-	add_child(collectible)
+	call_deferred("add_child", collectible)
 
 func onShotSpawn(gunRootPosition: Vector2, distanceTravelled: float, height: float) -> void:
 	var shot := SHOTPREFAB.instantiate()

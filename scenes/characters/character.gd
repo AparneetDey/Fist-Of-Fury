@@ -148,8 +148,10 @@ func handlePickup() -> void:
 	if canPickupCollectible():
 		var collectibleAreas : Array = collectibleSensor.get_overlapping_areas()
 		var collectible : Collectible = collectibleAreas[0]
-		if collectible.type == Collectible.Type.KNIFE and not HasKnife:
+		if collectible.type == Collectible.Type.KNIFE and not isCarryingWeapon():
 			HasKnife = true
+		if collectible.type == Collectible.Type.GUN and not isCarryingWeapon():
+			HasGun = true
 		collectible.queue_free()
 
 func handleGunShot() -> void:
@@ -157,12 +159,12 @@ func handleGunShot() -> void:
 	velocity = Vector2.ZERO
 	var weaponRootPosition = Vector2(weaponPosition.global_position.x, global_position.y)
 	var gunHeight = -weaponPosition.position.y
-	var targetDistance = heading * (global_position.x + get_viewport_rect().size.x)
+	var targetPosition = heading * (global_position.x + get_viewport_rect().size.x)
 	var target = projectileAim.get_collider()
 	if target != null:
-		targetDistance = projectileAim.get_collision_point()
+		targetPosition = heading * projectileAim.get_collision_point()
 		target.onReceiveDamage(DamageShot, heading, DamageReceiver.HitType.KNOCKDOWN)
-	var distance : float = targetDistance.x - weaponPosition.position.x
+	var distance : float = targetPosition.x - weaponPosition.position.x
 	EntityManager.spawnShot.emit(weaponRootPosition, distance, gunHeight)
 
 func setHeading() -> void:
@@ -202,9 +204,14 @@ func canPickupCollectible() -> bool:
 	if collectibleAreas.size() == 0:
 		return false
 	var collectible : Collectible = collectibleAreas[0]
-	if collectible.type == Collectible.Type.KNIFE and not HasKnife:
+	if collectible.type == Collectible.Type.KNIFE and not isCarryingWeapon():
+		return true
+	if collectible.type == Collectible.Type.GUN and not isCarryingWeapon():
 		return true
 	return false
+
+func isCarryingWeapon() -> bool:
+	return HasKnife or HasGun
 
 func isCollisionDisabled() -> bool:
 	return [State.GROUNDED, State.DEATH, State.FLY, State.FALL].has(state)
@@ -248,8 +255,10 @@ func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.
 		if HasKnife:
 			HasKnife = false
 			timeSinceKnifeDismiss = Time.get_ticks_msec()
+			EntityManager.spawnCollectible.emit(Collectible.Type.KNIFE, Collectible.State.FALL, global_position, Vector2.ZERO, 0.0)
 		if HasGun:
 			HasGun = false
+			EntityManager.spawnCollectible.emit(Collectible.Type.GUN, Collectible.State.FALL, global_position, Vector2.ZERO, 0.0)
 		currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
 		if hitType == DamageReceiver.HitType.KNOCKDOWN or currentHealth == 0:
 			state = State.FALL
