@@ -52,8 +52,8 @@ position = Vector2(43, 51)
 position = Vector2(123, 46)
 
 [node name="Barrel2" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
-position = Vector2(64, 65)
-contentType = 1
+position = Vector2(61, 46)
+contentType = 2
 
 [node name="ThugEnemy" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("6_gbfbk")]
 position = Vector2(-6, 57)

@@ -156,6 +156,10 @@ func handlePickup() -> void:
 		if collectible.type == Collectible.Type.GUN and not isCarryingWeapon():
 			HasGun = true
 			ammoLeft = MaxAmmoPerGun
+		if collectible.type == Collectible.Type.FOOD:
+			print(currentHealth)
+			currentHealth = MaxHealth
+			print(currentHealth)
 		collectible.queue_free()
 
 func handleGunShot() -> void:
@@ -204,6 +208,8 @@ func canGetHurt() -> bool:
 	return [State.IDLE, State.WALK, State.TAKEOFF, State.HURT, State.ATTACK, State.PREP_ATTACK, State.PREP_SHOOT].has(state)
 
 func canPickupCollectible() -> bool:
+	if CanRespawnKnives:
+		return false
 	var collectibleAreas : Array = collectibleSensor.get_overlapping_areas()
 	if collectibleAreas.size() == 0:
 		return false
@@ -211,6 +217,8 @@ func canPickupCollectible() -> bool:
 	if collectible.type == Collectible.Type.KNIFE and not isCarryingWeapon():
 		return true
 	if collectible.type == Collectible.Type.GUN and not isCarryingWeapon():
+		return true
+	if collectible.type == Collectible.Type.FOOD and currentHealth < MaxHealth and CanRespawn:
 		return true
 	return false
 

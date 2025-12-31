@@ -1,0 +1,86 @@
+[gd_scene load_steps=8 format=3 uid="uid://3uitk52caafc"]
+
+[ext_resource type="PackedScene" uid="uid://cj4t264s5ehse" path="res://scenes/props/collectible.tscn" id="1_jjyr7"]
+[ext_resource type="Texture2D" uid="uid://b7m1dqrknjugm" path="res://assets/art/props/chicken.png" id="2_c4gds"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c4gds"]
+
+[sub_resource type="Animation" id="Animation_3q8dw"]
+resource_name = "fall"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollectibleSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0.0, 1.5707964, 3.1415927, 4.712389]
+}
+
+[sub_resource type="Animation" id="Animation_mabpi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollectibleSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_do3yn"]
+resource_name = "grounded"
+length = 0.1
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollectibleSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ngdjs"]
+_data = {
+&"RESET": SubResource("Animation_mabpi"),
+&"fall": SubResource("Animation_3q8dw"),
+&"grounded": SubResource("Animation_do3yn")
+}
+
+[node name="Food" instance=ExtResource("1_jjyr7")]
+collision_mask = 2
+KnockdownIntensity = 80.0
+type = 2
+
+[node name="CollisionShape2D" parent="." index="0"]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_c4gds")
+
+[node name="CollectibleSprite" parent="." index="1"]
+texture = ExtResource("2_c4gds")
+centered = false
+offset = Vector2(-8, -8)
+
+[node name="AnimationPlayer" parent="." index="3"]
+libraries = {
+&"": SubResource("AnimationLibrary_ngdjs")
+}
+autoplay = "fall"
+
+[editable path="DamageEmitter"]

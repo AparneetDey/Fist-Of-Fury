@@ -3,7 +3,8 @@ extends Node2D
 const SHOTPREFAB := preload("res://scenes/props/shot.tscn")
 const PREFABMAP := {
 	Collectible.Type.KNIFE: preload("res://scenes/props/knife.tscn"),
-	Collectible.Type.GUN: preload("res://scenes/props/gun.tscn")
+	Collectible.Type.GUN: preload("res://scenes/props/gun.tscn"),
+	Collectible.Type.FOOD: preload("res://scenes/props/food.tscn")
 }
 
 func _ready() -> void:
