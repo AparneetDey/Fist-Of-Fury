@@ -12,3 +12,5 @@ signal  spawnShot(gunRootPosition: Vector2, distanceTravelled: float, height: fl
 
 signal spawnEnemy(enemyType: Character.Type, enemyPosition: Vector2)
 signal deathEnemy
+
+signal orphanActor(orphan : Node2D)

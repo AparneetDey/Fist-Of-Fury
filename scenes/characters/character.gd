@@ -216,6 +216,8 @@ func canGetHurt() -> bool:
 func canPickupCollectible() -> bool:
 	if CanRespawnKnives:
 		return false
+	if (Time.get_ticks_msec() - timeSinceKnifeDismiss) < DurationBetweenKnifeRespawn:
+		return false
 	var collectibleAreas : Array = collectibleSensor.get_overlapping_areas()
 	if collectibleAreas.size() == 0:
 		return false

@@ -15,10 +15,11 @@ const ENEMYMAP := {
 
 @export var player : Player
 
-func _ready() -> void:
+func _init() -> void:
 	EntityManager.spawnCollectible.connect(onCollectibleSpawn.bind())
 	EntityManager.spawnShot.connect(onShotSpawn.bind())
 	EntityManager.spawnEnemy.connect(onEnemySpawn.bind())
+	EntityManager.orphanActor.connect(onOrphanActor.bind())
 
 func onCollectibleSpawn(type: Collectible.Type, initialState: Collectible.State, collectibleGlobalPosition: Vector2, collectibleDirection: Vector2, collectibleHeight: float, autoDestroy: bool) -> void:
 	var collectible : Collectible = PREFABMAP[type].instantiate()
@@ -40,3 +41,6 @@ func onEnemySpawn(enemyType: Character.Type, enemyPosition: Vector2) -> void:
 	enemy.global_position = enemyPosition
 	enemy.player = player
 	add_child(enemy)
+
+func onOrphanActor(orphan : Node2D) -> void:
+	orphan.reparent(self)

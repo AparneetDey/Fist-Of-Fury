@@ -23,7 +23,6 @@ func _process(_delta: float) -> void:
 		var enemy = enemyData.pop_front()
 		EntityManager.spawnEnemy.emit(enemy.type, enemy.global_position)
 		activeEnemyCounter += 1
-		print(activeEnemyCounter)
 
 func canSpawnEnemies() -> bool:
 	return enemyData.size() > 0 and activeEnemyCounter < noSimultaneosEnemies
