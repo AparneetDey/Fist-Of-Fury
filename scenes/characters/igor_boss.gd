@@ -6,11 +6,13 @@ const GROUND_FRICTION := 50
 @export var DistanceFromPlayer : int
 @export var DurationBetweenAttacks : int
 @export var DurationVulnerable : int
+@export var DurationPrepAttackTime : int
 @export var player : Player
 
 var knockbackForce := Vector2.ZERO
 var timeSinceLastAttacked := Time.get_ticks_msec()
 var timeSinceVulnerable := Time.get_ticks_msec()
+var timeSincePrepAttack := Time.get_ticks_msec()
 
 func _process(delta: float) -> void:
 	super._process(delta)
@@ -31,8 +33,9 @@ func isPlayerWithInRange() -> bool:
 func handleInput() -> void:
 	if player != null and canMove():
 		if canAttack() and projectileAim.is_colliding():
-			state = State.FLY
-			velocity = heading * FlightSpeed
+			state = State.PREP_ATTACK
+			velocity = Vector2.ZERO
+			timeSincePrepAttack = Time.get_ticks_msec()
 		else:
 			if isPlayerWithInRange():
 				velocity = Vector2.ZERO
@@ -50,6 +53,11 @@ func handleGroundedTime() -> void:
 	elif state == State.RECOVER and (Time.get_ticks_msec() - timeSinceVulnerable) > DurationVulnerable:
 		state = State.IDLE
 		timeSinceLastAttacked = Time.get_ticks_msec()
+
+func handlePrepAttackTime() -> void:
+	if state == State.PREP_ATTACK and (Time.get_ticks_msec() - timeSincePrepAttack) > DurationPrepAttackTime:
+		state = State.FLY
+		velocity = heading * FlightSpeed
 
 func setHeading() -> void:
 	if player != null and canMove():

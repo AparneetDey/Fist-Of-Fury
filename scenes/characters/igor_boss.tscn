@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b2qivoat431d3"]
+[gd_scene load_steps=18 format=3 uid="uid://b2qivoat431d3"]
 
 [ext_resource type="PackedScene" uid="uid://btwcg8x0rthlq" path="res://scenes/characters/character.tscn" id="1_jtjl3"]
 [ext_resource type="Script" uid="uid://cl2yyajlbvew1" path="res://scenes/characters/igor_boss.gd" id="2_0niep"]
@@ -7,24 +7,6 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0niep"]
 radius = 2.0
 height = 10.0
-
-[sub_resource type="Animation" id="Animation_jtjl3"]
-resource_name = "idle"
-length = 0.1
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [80]
-}
 
 [sub_resource type="Animation" id="Animation_thh5s"]
 length = 0.001
@@ -39,42 +21,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [80]
-}
-
-[sub_resource type="Animation" id="Animation_0niep"]
-resource_name = "walk"
-length = 0.8
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [90, 91, 92, 93, 94, 95, 96, 97]
-}
-
-[sub_resource type="Animation" id="Animation_3826h"]
-resource_name = "fly"
-length = 0.1
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [43]
 }
 
 [sub_resource type="Animation" id="Animation_phmym"]
@@ -95,6 +41,24 @@ tracks/0/keys = {
 "values": [60]
 }
 
+[sub_resource type="Animation" id="Animation_3826h"]
+resource_name = "fly"
+length = 0.1
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [43]
+}
+
 [sub_resource type="Animation" id="Animation_oq2vq"]
 resource_name = "grounded"
 length = 0.1
@@ -111,24 +75,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [62]
-}
-
-[sub_resource type="Animation" id="Animation_75gub"]
-resource_name = "recover"
-length = 0.1
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [70]
 }
 
 [sub_resource type="Animation" id="Animation_lh6b1"]
@@ -162,6 +108,78 @@ tracks/1/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_jtjl3"]
+resource_name = "idle"
+length = 0.1
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [80]
+}
+
+[sub_resource type="Animation" id="Animation_75gub"]
+resource_name = "recover"
+length = 0.1
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [70]
+}
+
+[sub_resource type="Animation" id="Animation_0niep"]
+resource_name = "walk"
+length = 0.8
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [90, 91, 92, 93, 94, 95, 96, 97]
+}
+
+[sub_resource type="Animation" id="Animation_8mg31"]
+resource_name = "prep_attack"
+length = 0.1
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [90]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8mg31"]
 _data = {
 &"RESET": SubResource("Animation_thh5s"),
@@ -170,6 +188,7 @@ _data = {
 &"grounded": SubResource("Animation_oq2vq"),
 &"hurt": SubResource("Animation_lh6b1"),
 &"idle": SubResource("Animation_jtjl3"),
+&"prep_attack": SubResource("Animation_8mg31"),
 &"recover": SubResource("Animation_75gub"),
 &"walk": SubResource("Animation_0niep")
 }
@@ -188,10 +207,11 @@ script = ExtResource("2_0niep")
 DistanceFromPlayer = 40
 DurationBetweenAttacks = 2500
 DurationVulnerable = 2000
+DurationPrepAttackTime = 100
 Damage = 8
 MaxHealth = 60
 DurationGrounded = 2000
-FlightSpeed = 70.0
+FlightSpeed = 90.0
 KnockbackIntensity = 10.0
 KnockdownIntensity = 100.0
 Speed = 25.0

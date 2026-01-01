@@ -53,7 +53,7 @@ var animMap : Dictionary = {
 	State.GROUNDED: "grounded",
 	State.DEATH: "grounded",
 	State.FLY: "fly",
-	State.PREP_ATTACK: "idle",
+	State.PREP_ATTACK: "prep_attack",
 	State.THROW: "throw",
 	State.PICKUP: "pickup",
 	State.SHOOT: "shoot",

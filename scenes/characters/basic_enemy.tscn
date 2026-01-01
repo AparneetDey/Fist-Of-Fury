@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dmf2bs2604cr0"]
+[gd_scene load_steps=26 format=3 uid="uid://dmf2bs2604cr0"]
 
 [ext_resource type="PackedScene" uid="uid://btwcg8x0rthlq" path="res://scenes/characters/character.tscn" id="1_xsmbu"]
 [ext_resource type="Texture2D" uid="uid://duisqbp8m6x8" path="res://assets/art/characters/enemy_punk.png" id="2_dwul0"]
@@ -643,6 +643,48 @@ tracks/2/keys = {
 "values": [10, 11, 12, 13, 14, 15, 16, 17]
 }
 
+[sub_resource type="Animation" id="Animation_vew6f"]
+resource_name = "prep_attack"
+length = 0.1
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("KnifeSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GunSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kcdp1"]
 _data = {
 &"RESET": SubResource("Animation_dwul0"),
@@ -653,6 +695,7 @@ _data = {
 &"idle": SubResource("Animation_xsmbu"),
 &"land": SubResource("Animation_enhbp"),
 &"pickup": SubResource("Animation_edgux"),
+&"prep_attack": SubResource("Animation_vew6f"),
 &"punch": SubResource("Animation_cwu1o"),
 &"punch_alt": SubResource("Animation_nnnvc"),
 &"shoot": SubResource("Animation_11v57"),
