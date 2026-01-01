@@ -16,12 +16,14 @@ func _ready() -> void:
 	for enemy : Character in enemies.get_children():
 		enemyData.append(EnemyData.new(enemy.type, enemy.global_position))
 		enemy.queue_free()
+	print(enemyData.size())
 
 func _process(_delta: float) -> void:
 	if isActivated and canSpawnEnemies():
 		var enemy = enemyData.pop_front()
 		EntityManager.spawnEnemy.emit(enemy.type, enemy.global_position)
 		activeEnemyCounter += 1
+		print(activeEnemyCounter)
 
 func canSpawnEnemies() -> bool:
 	return enemyData.size() > 0 and activeEnemyCounter < noSimultaneosEnemies
@@ -29,6 +31,7 @@ func canSpawnEnemies() -> bool:
 func onPlayerEnter(_player : Player) -> void:
 	if not isActivated:
 		isActivated = true
+		activeEnemyCounter = 0
 		StageManager.checkpointStart.emit()
 
 func onEnemyDeath() -> void:
