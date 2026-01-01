@@ -185,13 +185,13 @@ size = Vector2(6, 6)
 
 [node name="IgorBoss" instance=ExtResource("1_jtjl3")]
 script = ExtResource("2_0niep")
-DistanceFromPlayer = 30
+DistanceFromPlayer = 40
 DurationBetweenAttacks = 2500
 DurationVulnerable = 2000
 Damage = 8
 MaxHealth = 60
 DurationGrounded = 2000
-FlightSpeed = 80.0
+FlightSpeed = 70.0
 KnockbackIntensity = 10.0
 KnockdownIntensity = 100.0
 Speed = 25.0
@@ -218,7 +218,7 @@ autoplay = "idle"
 collision_mask = 16
 
 [node name="CollisionShape2D" parent="DamageEmitter" index="0"]
-position = Vector2(9, -9)
+position = Vector2(12, -12)
 shape = SubResource("RectangleShape2D_jtjl3")
 
 [node name="DamageReceiver" parent="." index="5"]
