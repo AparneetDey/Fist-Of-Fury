@@ -210,6 +210,7 @@ DurationVulnerable = 2000
 DurationPrepAttackTime = 100
 Damage = 8
 MaxHealth = 60
+type = 4
 DurationGrounded = 2000
 FlightSpeed = 90.0
 KnockbackIntensity = 10.0

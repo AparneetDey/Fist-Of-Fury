@@ -725,6 +725,7 @@ DurationPrepMeleeAttack = 500
 DurationPrepRangeAttack = 500
 Damage = 2
 MaxHealth = 30
+type = 1
 DurationGrounded = 1000
 FlightSpeed = 100.0
 KnockbackIntensity = 10.0

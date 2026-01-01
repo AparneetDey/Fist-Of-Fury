@@ -1,6 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://cwxa520uqekpk"]
-
-[ext_resource type="Texture2D" uid="uid://ct7splt52hfwe" path="res://assets/art/backgrounds/street-background.png" id="1_iinn4"]
+[gd_scene load_steps=2 format=3 uid="uid://cwxa520uqekpk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iinn4"]
 size = Vector2(400, 20)
@@ -9,8 +7,7 @@ size = Vector2(400, 20)
 
 [node name="Backgrounds" type="Node2D" parent="."]
 
-[node name="Sprite2D" type="Sprite2D" parent="Backgrounds"]
-texture = ExtResource("1_iinn4")
+[node name="MainBackground" type="Sprite2D" parent="Backgrounds"]
 centered = false
 
 [node name="WorldColliders" type="Node2D" parent="."]
@@ -28,3 +25,5 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldColliders/StaticBody2D/StaticBody2D"]
 position = Vector2(200, 75)
 shape = SubResource("RectangleShape2D_iinn4")
+
+[node name="Checkpoints" type="Node2D" parent="."]

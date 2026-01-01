@@ -8,5 +8,6 @@ signal spawnCollectible(
 	collectibleHeight: float, 
 	autoDestroy: bool
 )
-
 signal  spawnShot(gunRootPosition: Vector2, distanceTravelled: float, height: float)
+
+signal spawnEnemy(enemyType: Character.Type, enemyPosition: Vector2)

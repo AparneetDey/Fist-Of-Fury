@@ -5,12 +5,13 @@
 
 [node name="GoonEnemy" instance=ExtResource("1_55rrx")]
 DurationBetweenRangeAttack = 4000
-CanRespawnKnives = true
 Damage = 1
+MaxHealth = 20
+type = 2
+Speed = 30.0
+CanRespawnKnives = true
 DurationBetweenKnifeRespawn = 2000
 HasKnife = true
-MaxHealth = 20
-Speed = 30.0
 
 [node name="CharacterSprite" parent="." index="1"]
 texture = ExtResource("2_jdxqa")

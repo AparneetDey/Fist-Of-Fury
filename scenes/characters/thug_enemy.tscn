@@ -6,10 +6,11 @@
 [node name="ThugEnemy" instance=ExtResource("1_qlivg")]
 DurationBetweenRangeAttack = 2500
 Damage = 3
-DurationGrounded = 1300
-HasGun = true
 MaxHealth = 35
+type = 3
+DurationGrounded = 1300
 Speed = 18.0
+HasGun = true
 
 [node name="CharacterSprite" parent="." index="1"]
 texture = ExtResource("2_0vkad")

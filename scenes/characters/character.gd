@@ -6,7 +6,7 @@ const GRAVITY := 600.0
 @export var CanRespawn : bool
 @export var Damage : int
 @export var MaxHealth : int
-
+@export var type : Type
 
 @export_group("Movement")
 @export var DurationGrounded : int
@@ -39,6 +39,7 @@ const GRAVITY := 600.0
 @onready var gunSprite := $GunSprite
 
 enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP, SHOOT, PREP_SHOOT, RECOVER }
+enum Type {PLAYER, PUNK, GOON, THUG, BOUNCER}
 
 var animAttacks : Array = []
 var animMap : Dictionary = {
