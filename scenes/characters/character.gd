@@ -38,7 +38,7 @@ const GRAVITY := 600.0
 @onready var weaponPosition := $KnifeSprite/WeaponPosition
 @onready var gunSprite := $GunSprite
 
-enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP, SHOOT, PREP_SHOOT, RECOVER }
+enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP, SHOOT, PREP_SHOOT, RECOVER, DROP }
 enum Type {PLAYER, PUNK, GOON, THUG, BOUNCER}
 
 var animAttacks : Array = []
@@ -59,7 +59,8 @@ var animMap : Dictionary = {
 	State.PICKUP: "pickup",
 	State.SHOOT: "shoot",
 	State.PREP_SHOOT: "idle",
-	State.RECOVER: "recover"
+	State.RECOVER: "recover",
+	State.DROP: "idle",
 }
 var attackComboIndex := 0
 var state := State.IDLE
@@ -78,6 +79,7 @@ func _ready() -> void:
 	collateralDamageEmitter.area_entered.connect(onEmitCollateralDamage.bind())
 	collateralDamageEmitter.body_entered.connect(onWallHit.bind())
 	currentHealth = MaxHealth
+	setSpriteHeightPosition()
 
 func _process(delta: float) -> void:
 	handleMovement()
@@ -89,15 +91,9 @@ func _process(delta: float) -> void:
 	handleKnifeRespawn()
 	handleGroundedTime()
 	handleDeath(delta)
-	collisionShape.disabled = isCollisionDisabled()
-	knifeSprite.visible = HasKnife
-	gunSprite.visible = HasGun
-	characterSprite.position = Vector2.UP * height
-	knifeSprite.position = Vector2.UP * height
-	gunSprite.position = Vector2.UP * height
-	damageEmitter.monitoring = isAttacking()
-	damageReceiver.monitorable = canGetHurt()
-	collateralDamageEmitter.monitoring = state == State.FLY
+	setSpriteVisibility()
+	setSpriteHeightPosition()
+	setUpCollisions()
 	setHeading()
 	flipCharacter()
 	move_and_slide()
@@ -125,7 +121,7 @@ func handleAnimation() -> void:
 		animatedSprite.play(animMap[state])
 		
 func handleAirTime(delta : float) -> void:
-	if [State.JUMP, State.JUMPKICK, State.FALL].has(state):
+	if [State.JUMP, State.JUMPKICK, State.FALL, State.DROP].has(state):
 		height += heightSpeed * delta
 		if height < 0:
 			height = 0
@@ -183,6 +179,21 @@ func handleGunShot() -> void:
 
 func setHeading() -> void:
 	pass
+
+func setSpriteVisibility() -> void:
+	knifeSprite.visible = HasKnife
+	gunSprite.visible = HasGun
+
+func setSpriteHeightPosition() -> void:
+	characterSprite.position = Vector2.UP * height
+	knifeSprite.position = Vector2.UP * height
+	gunSprite.position = Vector2.UP * height
+
+func setUpCollisions() -> void:
+	collisionShape.disabled = isCollisionDisabled()
+	damageEmitter.monitoring = isAttacking()
+	damageReceiver.monitorable = canGetHurt()
+	collateralDamageEmitter.monitoring = state == State.FLY
 
 func flipCharacter() -> void:
 	if heading == Vector2.RIGHT:

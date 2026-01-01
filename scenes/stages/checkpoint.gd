@@ -16,12 +16,11 @@ func _ready() -> void:
 	for enemy : Character in enemies.get_children():
 		enemyData.append(EnemyData.new(enemy.type, enemy.global_position))
 		enemy.queue_free()
-	print(enemyData.size())
 
 func _process(_delta: float) -> void:
 	if isActivated and canSpawnEnemies():
 		var enemy = enemyData.pop_front()
-		EntityManager.spawnEnemy.emit(enemy.type, enemy.global_position)
+		EntityManager.spawnEnemy.emit(enemy)
 		activeEnemyCounter += 1
 
 func canSpawnEnemies() -> bool:

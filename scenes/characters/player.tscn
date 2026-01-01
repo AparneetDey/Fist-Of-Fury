@@ -911,17 +911,17 @@ collision_layer = 2
 collision_mask = 137
 script = ExtResource("2_76oj4")
 DurationBetweenLastSuccessfulHit = 2000
-AutoDestroyOnDrop = true
 CanRespawn = true
 Damage = 4
-DamageShot = 8
-DamagePower = 6
+MaxHealth = 40
 DurationGrounded = 1000
 JumpIntensity = 150.0
 KnockbackIntensity = 10.0
 KnockdownIntensity = 100.0
-MaxHealth = 40
 Speed = 35.0
+AutoDestroyOnDrop = true
+DamageShot = 8
+DamagePower = 6
 
 [node name="CharacterSprite" parent="." index="1"]
 texture = ExtResource("2_yewv4")
@@ -959,16 +959,16 @@ shape = SubResource("RectangleShape2D_76oj4")
 [node name="EnemySlots" type="Node2D" parent="." index="6"]
 
 [node name="EnemySlot" parent="EnemySlots" index="0" instance=ExtResource("4_dyp2m")]
-position = Vector2(16, 4)
+position = Vector2(16, 3)
 
 [node name="EnemySlot2" parent="EnemySlots" index="1" instance=ExtResource("4_dyp2m")]
-position = Vector2(16, -4)
+position = Vector2(16, -2)
 
 [node name="EnemySlot3" parent="EnemySlots" index="2" instance=ExtResource("4_dyp2m")]
-position = Vector2(-16, 4)
+position = Vector2(-16, 3)
 
 [node name="EnemySlot4" parent="EnemySlots" index="3" instance=ExtResource("4_dyp2m")]
-position = Vector2(-16, -4)
+position = Vector2(-16, -2)
 
 [node name="KnifeSprite" parent="." index="8"]
 texture = ExtResource("5_atpat")

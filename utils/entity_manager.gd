@@ -10,7 +10,7 @@ signal spawnCollectible(
 )
 signal  spawnShot(gunRootPosition: Vector2, distanceTravelled: float, height: float)
 
-signal spawnEnemy(enemyType: Character.Type, enemyPosition: Vector2)
+signal spawnEnemy(enemyData: EnemyData)
 signal deathEnemy
 
 signal orphanActor(orphan : Node2D)

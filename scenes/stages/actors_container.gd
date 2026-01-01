@@ -36,9 +36,11 @@ func onShotSpawn(gunRootPosition: Vector2, distanceTravelled: float, height: flo
 	shot.position = gunRootPosition
 	shot.initialize(distanceTravelled, height)
 
-func onEnemySpawn(enemyType: Character.Type, enemyPosition: Vector2) -> void:
-	var enemy : Character = ENEMYMAP[enemyType].instantiate()
-	enemy.global_position = enemyPosition
+func onEnemySpawn(enemyData: EnemyData) -> void:
+	var enemy : Character = ENEMYMAP[enemyData.type].instantiate()
+	enemy.global_position = enemyData.global_position
+	enemy.height = enemyData.height
+	enemy.state = enemyData.state
 	enemy.player = player
 	add_child(enemy)
 
