@@ -10,6 +10,7 @@ size = Vector2(100, 64)
 
 [node name="Checkpoint" type="Node2D"]
 script = ExtResource("1_wmod1")
+noSimultaneosEnemies = 2
 
 [node name="Enemies" type="Node2D" parent="."]
 

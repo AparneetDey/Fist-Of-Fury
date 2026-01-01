@@ -15,10 +15,10 @@ texture = ExtResource("2_tmnxn")
 position = Vector2(127, 0)
 
 [node name="BasicEnemy" parent="Checkpoints/Checkpoint/Enemies" index="0" instance=ExtResource("4_c8tl5")]
-position = Vector2(-18, 47)
+position = Vector2(-28, 40)
 
 [node name="BasicEnemy2" parent="Checkpoints/Checkpoint/Enemies" index="1" instance=ExtResource("4_c8tl5")]
-position = Vector2(114, 62)
+position = Vector2(127, 63)
 
 [node name="GoonEnemy" parent="Checkpoints/Checkpoint/Enemies" index="2" instance=ExtResource("5_sf8j7")]
 position = Vector2(-32, 60)
