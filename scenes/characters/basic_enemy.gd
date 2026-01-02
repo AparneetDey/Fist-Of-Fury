@@ -100,6 +100,7 @@ func onWaiting(delta) -> void:
 		modulate.a += delta
 		if modulate.a >= 1:
 			state = State.IDLE
+			modulate.a = 1
 
 func setHeading() -> void:
 	if player != null and canMove():
