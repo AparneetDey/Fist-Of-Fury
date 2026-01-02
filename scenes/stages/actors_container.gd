@@ -44,6 +44,7 @@ func onEnemySpawn(enemyData: EnemyData) -> void:
 	enemy.height = enemyData.height
 	enemy.state = enemyData.state
 	enemy.player = player
+	enemy.assignedDoorIndex = enemyData.doorIndex
 	if enemyData.doorIndex > -1:
 		enemy.handleAssignedDoor(doors[enemyData.doorIndex])
 	add_child(enemy)

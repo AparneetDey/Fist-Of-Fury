@@ -29,11 +29,11 @@ position = Vector2(35, 0)
 [node name="BasicEnemy" parent="Checkpoints/Checkpoint/Enemies" index="0" instance=ExtResource("4_c8tl5")]
 position = Vector2(60, 30)
 
-[node name="BasicEnemy2" parent="Checkpoints/Checkpoint/Enemies" index="1" instance=ExtResource("4_c8tl5")]
-position = Vector2(79, 30)
+[node name="BasicEnemy3" parent="Checkpoints/Checkpoint/Enemies" index="1" instance=ExtResource("4_c8tl5")]
+position = Vector2(6, -4)
 
-[node name="BasicEnemy3" parent="Checkpoints/Checkpoint/Enemies" index="2" instance=ExtResource("4_c8tl5")]
-position = Vector2(15, -11)
+[node name="BasicEnemy2" parent="Checkpoints/Checkpoint/Enemies" index="2" instance=ExtResource("4_c8tl5")]
+position = Vector2(79, 30)
 
 [node name="BasicEnemy4" parent="Checkpoints/Checkpoint/Enemies" index="3" instance=ExtResource("4_c8tl5")]
 position = Vector2(127, 63)

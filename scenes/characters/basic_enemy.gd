@@ -89,10 +89,17 @@ func handlePrepShootTime() -> void:
 		timeSinceLastRangeAttacked = Time.get_ticks_msec()
 
 func handleAssignedDoor(door : Door) -> void:
-	if door.state != Door.State.OPENED:
+	if door.state != Door.State.OPENED or assignedDoorIndex > -1:
 		state = State.WAIT
+		modulate.a = 0
 		door.open()
 		door.doorOpen.connect(onActionComplete.bind())
+
+func onWaiting(delta) -> void:
+	if state == State.WAIT:
+		modulate.a += delta
+		if modulate.a >= 1:
+			state = State.IDLE
 
 func setHeading() -> void:
 	if player != null and canMove():

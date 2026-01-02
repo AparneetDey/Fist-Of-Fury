@@ -92,6 +92,7 @@ func _process(delta: float) -> void:
 	handleKnifeRespawn()
 	handleGroundedTime()
 	handleDeath(delta)
+	onWaiting(delta)
 	setSpriteVisibility()
 	setSpriteHeightPosition()
 	setUpCollisions()
@@ -246,11 +247,14 @@ func isCarryingWeapon() -> bool:
 	return HasKnife or HasGun
 
 func isCollisionDisabled() -> bool:
-	return [State.GROUNDED, State.DEATH, State.FLY, State.FALL].has(state)
+	return [State.GROUNDED, State.DEATH, State.FLY, State.FALL, State.DROP].has(state)
 
 func isAttacking() -> bool:
 	return [State.ATTACK, State.JUMPKICK].has(state)
-	
+
+func onWaiting(_delta) -> void:
+	pass
+
 func onActionComplete() -> void:
 	state = State.IDLE
 
