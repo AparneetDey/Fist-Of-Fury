@@ -15,6 +15,8 @@ const ENEMYMAP := {
 
 @export var player : Player
 
+var doors : Array[Door] = []
+
 func _init() -> void:
 	EntityManager.spawnCollectible.connect(onCollectibleSpawn.bind())
 	EntityManager.spawnShot.connect(onShotSpawn.bind())
@@ -42,7 +44,11 @@ func onEnemySpawn(enemyData: EnemyData) -> void:
 	enemy.height = enemyData.height
 	enemy.state = enemyData.state
 	enemy.player = player
+	if enemyData.doorIndex > -1:
+		enemy.handleAssignedDoor(doors[enemyData.doorIndex])
 	add_child(enemy)
 
 func onOrphanActor(orphan : Node2D) -> void:
+	if orphan is Door:
+		doors.append(orphan)
 	orphan.reparent(self)

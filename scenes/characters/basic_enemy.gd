@@ -9,6 +9,7 @@ const SCREEN_EDGE_BUFFER := 10
 @export var DurationPrepMeleeAttack : int
 @export var DurationPrepRangeAttack : int
 
+var assignedDoorIndex := -1
 var playerSlot : EnemySlot = null
 var timeSinceLastMeleeAttacked := Time.get_ticks_msec()
 var timeSinceLastRangeAttacked := Time.get_ticks_msec()
@@ -87,6 +88,11 @@ func handlePrepShootTime() -> void:
 		handleGunShot()
 		timeSinceLastRangeAttacked = Time.get_ticks_msec()
 
+func handleAssignedDoor(door : Door) -> void:
+	if door.state != Door.State.OPENED:
+		state = State.WAIT
+		door.open()
+		door.doorOpen.connect(onActionComplete.bind())
 
 func setHeading() -> void:
 	if player != null and canMove():

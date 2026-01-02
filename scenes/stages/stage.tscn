@@ -13,6 +13,8 @@ script = ExtResource("1_iinn4")
 [node name="MainBackground" type="Sprite2D" parent="Backgrounds"]
 centered = false
 
+[node name="DoorBackgrounds" type="Node2D" parent="Backgrounds"]
+
 [node name="WorldColliders" type="Node2D" parent="."]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="WorldColliders"]
@@ -32,3 +34,5 @@ shape = SubResource("RectangleShape2D_iinn4")
 [node name="Checkpoints" type="Node2D" parent="."]
 
 [node name="Containers" type="Node2D" parent="."]
+
+[node name="Doors" type="Node2D" parent="."]

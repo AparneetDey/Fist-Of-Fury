@@ -38,7 +38,7 @@ const GRAVITY := 600.0
 @onready var weaponPosition := $KnifeSprite/WeaponPosition
 @onready var gunSprite := $GunSprite
 
-enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP, SHOOT, PREP_SHOOT, RECOVER, DROP }
+enum State { IDLE, WALK, ATTACK, TAKEOFF, JUMP , LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW, PICKUP, SHOOT, PREP_SHOOT, RECOVER, DROP, WAIT }
 enum Type {PLAYER, PUNK, GOON, THUG, BOUNCER}
 
 var animAttacks : Array = []
@@ -61,6 +61,7 @@ var animMap : Dictionary = {
 	State.PREP_SHOOT: "idle",
 	State.RECOVER: "recover",
 	State.DROP: "idle",
+	State.WAIT: "idle"
 }
 var attackComboIndex := 0
 var state := State.IDLE
@@ -295,6 +296,7 @@ func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.
 			EntityManager.spawnCollectible.emit(Collectible.Type.KNIFE, Collectible.State.FALL, global_position, Vector2.ZERO, 0.0, AutoDestroyOnDrop)
 		if HasGun:
 			HasGun = false
+			timeSinceKnifeDismiss = Time.get_ticks_msec()
 			EntityManager.spawnCollectible.emit(Collectible.Type.GUN, Collectible.State.FALL, global_position, Vector2.ZERO, 0.0, AutoDestroyOnDrop)
 		currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
 		if hitType == DamageReceiver.HitType.KNOCKDOWN or currentHealth == 0:
