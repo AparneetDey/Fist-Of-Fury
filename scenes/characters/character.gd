@@ -79,7 +79,7 @@ func _ready() -> void:
 	damageReceiver.damageReceived.connect(onReceiveDamage.bind())
 	collateralDamageEmitter.area_entered.connect(onEmitCollateralDamage.bind())
 	collateralDamageEmitter.body_entered.connect(onWallHit.bind())
-	currentHealth = MaxHealth
+	setHealth(MaxHealth)
 	setSpriteHeightPosition()
 
 func _process(delta: float) -> void:
@@ -163,7 +163,7 @@ func handlePickup() -> void:
 			HasGun = true
 			ammoLeft = MaxAmmoPerGun
 		if collectible.type == Collectible.Type.FOOD:
-			currentHealth = MaxHealth
+			setHealth(MaxHealth)
 		collectible.queue_free()
 
 func handleGunShot() -> void:
@@ -196,6 +196,10 @@ func setUpCollisions() -> void:
 	damageEmitter.monitoring = isAttacking()
 	damageReceiver.monitorable = canGetHurt()
 	collateralDamageEmitter.monitoring = state == State.FLY
+
+func setHealth(health: int):
+	currentHealth = clamp(health, 0 , MaxHealth)
+	DamageManager.healthChange.emit(type, currentHealth, MaxHealth)
 
 func flipCharacter() -> void:
 	if heading == Vector2.RIGHT:
@@ -292,6 +296,8 @@ func onEmitDamage(receiver : DamageReceiver) -> void:
 	
 func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.HitType) -> void:
 	if canGetHurt():
+		setHealth(currentHealth - damage)
+		
 		CanRespawnKnives = false
 		attackComboIndex = 0
 		if HasKnife:
@@ -302,7 +308,7 @@ func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.
 			HasGun = false
 			timeSinceKnifeDismiss = Time.get_ticks_msec()
 			EntityManager.spawnCollectible.emit(Collectible.Type.GUN, Collectible.State.FALL, global_position, Vector2.ZERO, 0.0, AutoDestroyOnDrop)
-		currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
+		
 		if hitType == DamageReceiver.HitType.KNOCKDOWN or currentHealth == 0:
 			state = State.FALL
 			heightSpeed = KnockdownIntensity
