@@ -159,11 +159,14 @@ func handlePickup() -> void:
 		var collectible : Collectible = collectibleAreas[0]
 		if collectible.type == Collectible.Type.KNIFE and not isCarryingWeapon():
 			HasKnife = true
+			SoundPlayer.play(SoundManager.Sound.SWOOSH)
 		if collectible.type == Collectible.Type.GUN and not isCarryingWeapon():
 			HasGun = true
 			ammoLeft = MaxAmmoPerGun
+			SoundPlayer.play(SoundManager.Sound.SWOOSH)
 		if collectible.type == Collectible.Type.FOOD:
 			setHealth(MaxHealth)
+			SoundPlayer.play(SoundManager.Sound.FOOD)
 		collectible.queue_free()
 
 func handleGunShot() -> void:
@@ -179,6 +182,7 @@ func handleGunShot() -> void:
 		EntityManager.spawnSpark.emit(target.position)
 	var distance : float = targetPosition.x - weaponPosition.position.x
 	EntityManager.spawnShot.emit(weaponRootPosition, distance, gunHeight)
+	SoundPlayer.play(SoundManager.Sound.GUNSHOT, true)
 
 func setHeading() -> void:
 	pass
@@ -275,6 +279,7 @@ func onThrowComplete() -> void:
 	var collectibleGlobalPosition := Vector2(weaponPosition.global_position.x, global_position.y)
 	var collectibleHeight : float = -weaponPosition.position.y
 	EntityManager.spawnCollectible.emit(collectibleType, Collectible.State.FLY, collectibleGlobalPosition, heading, collectibleHeight, false)
+	SoundPlayer.play(SoundManager.Sound.SWOOSH, true)
 
 func onPickupComplete() -> void:
 	state = State.IDLE
@@ -283,6 +288,7 @@ func onPickupComplete() -> void:
 func onTakeOffComplete() -> void:
 	state = State.JUMP
 	heightSpeed = JumpIntensity
+	SoundPlayer.play(SoundManager.Sound.SWOOSH)
 
 func onEmitDamage(receiver : DamageReceiver) -> void:
 	var hitType = DamageReceiver.HitType.NORMAL
@@ -299,6 +305,7 @@ func onEmitDamage(receiver : DamageReceiver) -> void:
 func onReceiveDamage(damage : int, direction : Vector2, hitType: DamageReceiver.HitType) -> void:
 	if canGetHurt():
 		setHealth(currentHealth - damage)
+		SoundPlayer.play(SoundManager.Sound.HIT1, true)
 		
 		CanRespawnKnives = false
 		attackComboIndex = 0

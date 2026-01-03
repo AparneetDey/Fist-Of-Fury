@@ -30,6 +30,7 @@ func onReceiveDamage(_damage : int, direction : Vector2, _hitType : DamageReceiv
 		heightSpeed = knockbackIntensity * 2
 		velocity = direction * knockbackIntensity
 		EntityManager.spawnCollectible.emit(contentType, Collectible.State.FALL, global_position, Vector2.ZERO, 0.0, false)
+		SoundPlayer.play(SoundManager.Sound.HIT2, true)
 
 		
 func handleAirTime(delta : float) -> void:
