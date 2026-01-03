@@ -84,6 +84,7 @@ func onReceiveDamage(damage : int, direction : Vector2, _hitType: DamageReceiver
 	if not isVulnerable():
 		knockbackForce = direction * KnockbackIntensity
 		return
+	ComboManager.registerHit.emit()
 	currentHealth = clamp(currentHealth - damage, 0, MaxHealth)
 	if currentHealth <= 0:
 		state = State.FALL

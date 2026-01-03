@@ -111,6 +111,7 @@ func setHeading() -> void:
 
 func onReceiveDamage(damage : int, direction : Vector2, hitType : DamageReceiver.HitType) -> void:
 	super.onReceiveDamage(damage, direction, hitType)
+	ComboManager.registerHit.emit()
 	if currentHealth <= 0:
 		player.freeSlot(self)
 		EntityManager.deathEnemy.emit()

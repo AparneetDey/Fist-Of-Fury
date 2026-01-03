@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://ce01gc7jecnyt"]
+[gd_scene load_steps=6 format=3 uid="uid://ce01gc7jecnyt"]
 
 [ext_resource type="Script" uid="uid://cf6bq80f1jvgd" path="res://scenes/ui/ui.gd" id="1_g5kmx"]
 [ext_resource type="Texture2D" uid="uid://c2qx4dqty47gq" path="res://assets/art/ui/avatars/avatar-punk.png" id="1_u7n8c"]
 [ext_resource type="Texture2D" uid="uid://bpn0iafmbpate" path="res://assets/art/ui/avatars/avatar-player.png" id="2_f5cxw"]
 [ext_resource type="PackedScene" uid="uid://ibhyveg2rsdk" path="res://scenes/ui/health_bar.tscn" id="3_aac20"]
+[ext_resource type="PackedScene" uid="uid://7s83tk10j6ck" path="res://scenes/ui/combo_indicator.tscn" id="5_0dwhk"]
 
 [node name="UI" type="CanvasLayer"]
 script = ExtResource("1_g5kmx")
@@ -60,5 +61,17 @@ offset_bottom = 7.0
 grow_horizontal = 0
 grow_vertical = 1
 scale = Vector2(-1, 1)
+
+[node name="ComboIndicator" parent="UIControls" instance=ExtResource("5_0dwhk")]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -7.0
+offset_right = 21.0
+offset_bottom = -1.0
+grow_vertical = 0
+vertical_alignment = 2
 
 [editable path="UIControls/EnemyHealthBar"]
