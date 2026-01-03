@@ -1,6 +1,8 @@
 class_name Stage
 extends Node2D
 
+@export var music : MusicManager.Music
+
 @onready var containers := $Containers
 @onready var doors := $Doors
 @onready var checkpoints := $Checkpoints
@@ -19,3 +21,5 @@ func _ready() -> void:
 	
 	for checkpoint : Checkpoint in checkpoints.get_children():
 		checkpoint.createEnemyData()
+	
+	MusicPlayer.play(music)
