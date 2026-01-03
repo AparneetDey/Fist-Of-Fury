@@ -13,4 +13,6 @@ signal  spawnShot(gunRootPosition: Vector2, distanceTravelled: float, height: fl
 signal spawnEnemy(enemyData: EnemyData)
 signal deathEnemy
 
+signal spawnSpark(sparkPosition: Vector2)
+
 signal orphanActor(orphan : Node2D)

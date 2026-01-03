@@ -90,6 +90,7 @@ func onReceiveDamage(damage : int, direction : Vector2, _hitType: DamageReceiver
 		state = State.FALL
 		heightSpeed = KnockdownIntensity
 		velocity = direction * KnockbackIntensity
+		EntityManager.spawnSpark.emit(position)
 		EntityManager.deathEnemy.emit()
 	else:
 		velocity = Vector2.ZERO

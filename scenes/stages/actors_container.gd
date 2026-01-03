@@ -1,5 +1,6 @@
 extends Node2D
 
+const SPARKPREFAB := preload("res://scenes/vfx/spark.tscn")
 const SHOTPREFAB := preload("res://scenes/props/shot.tscn")
 const PREFABMAP := {
 	Collectible.Type.KNIFE: preload("res://scenes/props/knife.tscn"),
@@ -22,6 +23,7 @@ func _init() -> void:
 	EntityManager.spawnShot.connect(onShotSpawn.bind())
 	EntityManager.spawnEnemy.connect(onEnemySpawn.bind())
 	EntityManager.orphanActor.connect(onOrphanActor.bind())
+	EntityManager.spawnSpark.connect(onSpawnSpark.bind())
 
 func onCollectibleSpawn(type: Collectible.Type, initialState: Collectible.State, collectibleGlobalPosition: Vector2, collectibleDirection: Vector2, collectibleHeight: float, autoDestroy: bool) -> void:
 	var collectible : Collectible = PREFABMAP[type].instantiate()
@@ -53,3 +55,8 @@ func onOrphanActor(orphan : Node2D) -> void:
 	if orphan is Door:
 		doors.append(orphan)
 	orphan.reparent(self)
+
+func onSpawnSpark(sparkPosition: Vector2) -> void:
+	var spark = SPARKPREFAB.instantiate()
+	spark.position = sparkPosition
+	add_child(spark)

@@ -176,6 +176,7 @@ func handleGunShot() -> void:
 	if target != null:
 		targetPosition = heading * projectileAim.get_collision_point()
 		target.onReceiveDamage(DamageShot, heading, DamageReceiver.HitType.KNOCKDOWN)
+		EntityManager.spawnSpark.emit(target.position)
 	var distance : float = targetPosition.x - weaponPosition.position.x
 	EntityManager.spawnShot.emit(weaponRootPosition, distance, gunHeight)
 
