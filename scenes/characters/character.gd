@@ -79,7 +79,7 @@ func _ready() -> void:
 	damageReceiver.damageReceived.connect(onReceiveDamage.bind())
 	collateralDamageEmitter.area_entered.connect(onEmitCollateralDamage.bind())
 	collateralDamageEmitter.body_entered.connect(onWallHit.bind())
-	setHealth(MaxHealth)
+	setHealth(MaxHealth, type == Type.PLAYER)
 	setSpriteHeightPosition()
 
 func _process(delta: float) -> void:
@@ -197,9 +197,10 @@ func setUpCollisions() -> void:
 	damageReceiver.monitorable = canGetHurt()
 	collateralDamageEmitter.monitoring = state == State.FLY
 
-func setHealth(health: int):
+func setHealth(health: int, sendSignal: bool = true):
 	currentHealth = clamp(health, 0 , MaxHealth)
-	DamageManager.healthChange.emit(type, currentHealth, MaxHealth)
+	if sendSignal:
+		DamageManager.healthChange.emit(type, currentHealth, MaxHealth)
 
 func flipCharacter() -> void:
 	if heading == Vector2.RIGHT:
