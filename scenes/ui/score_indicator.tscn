@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckrirsjkqx5kg"]
+
+[ext_resource type="Theme" uid="uid://cm4gy0knt1fmc" path="res://gui_theme.tres" id="1_p3m8a"]
+[ext_resource type="Script" uid="uid://ba44pn304ubw8" path="res://scenes/ui/score_indicator.gd" id="2_8t32t"]
+
+[node name="ScoreIndicator" type="Label"]
+offset_right = 26.0
+offset_bottom = 6.0
+theme = ExtResource("1_p3m8a")
+text = "100"
+script = ExtResource("2_8t32t")
+DurationUpdateScore = 300.0

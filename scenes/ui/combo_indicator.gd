@@ -1,6 +1,8 @@
 class_name ComboIndicator
 extends Label
 
+signal comboReset(points: int)
+
 @export var DurationComboTimeOut : int
 
 var comboCounter := 0
@@ -15,6 +17,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if comboCounter > 0 and (Time.get_ticks_msec() - timeSinceComboTimeOut) > DurationComboTimeOut:
+		comboReset.emit(comboCounter)
 		comboCounter = 0	
 		refresh()
 

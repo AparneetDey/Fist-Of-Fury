@@ -12,6 +12,8 @@ const AVATARMAP := {
 @onready var playerHealthBar := $UIControls/PlayerHealthBar
 @onready var enemyAvatar := $UIControls/EnemyAvatar
 @onready var enemyHealthBar := $UIControls/EnemyHealthBar
+@onready var comboIndicator := $UIControls/ComboIndicator
+@onready var scoreIndicator := $UIControls/ScoreIndicator
 
 var timeEnemyHealthVisible := Time.get_ticks_msec()
 
@@ -21,6 +23,7 @@ func _init() -> void:
 func _ready() -> void:
 	enemyAvatar.visible = false
 	enemyHealthBar.visible = false
+	comboIndicator.comboReset.connect(onComboReset.bind())
 
 func _process(_delta: float) -> void:
 	if enemyHealthBar.visible and (Time.get_ticks_msec() - timeEnemyHealthVisible) > DurationEnemyHealthVisible:
@@ -36,3 +39,6 @@ func onHealthChange(characterType: Character.Type, currentHealth: int, maxHealth
 		enemyAvatar.visible = true
 		enemyHealthBar.visible = true
 		timeEnemyHealthVisible = Time.get_ticks_msec()
+
+func onComboReset(points: int) -> void:
+	scoreIndicator.updateScore(points)
