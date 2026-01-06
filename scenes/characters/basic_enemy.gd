@@ -117,6 +117,7 @@ func onReceiveDamage(damage : int, direction : Vector2, hitType : DamageReceiver
 	if currentHealth <= 0:
 		player.freeSlot(self)
 		EntityManager.deathEnemy.emit()
+		DamageManager.heavyBlowReceived.emit()
 
 func isPlayerWithInRange() -> bool:
 	return (playerSlot.global_position - global_position).length() < 1

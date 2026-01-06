@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxfu7n651hfmx"]
+
+[ext_resource type="Script" uid="uid://djqc4bs73ohcy" path="res://scenes/ui/flickering_label.gd" id="1_ntwlh"]
+
+[node name="FlickeringTexture" type="TextureRect"]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("1_ntwlh")
+DurationFlicker = 200
+TotalFlickers = 3

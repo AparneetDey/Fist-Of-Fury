@@ -14,11 +14,13 @@ const AVATARMAP := {
 @onready var enemyHealthBar := $UIControls/EnemyHealthBar
 @onready var comboIndicator := $UIControls/ComboIndicator
 @onready var scoreIndicator := $UIControls/ScoreIndicator
+@onready var goIndicator := $UIControls/GoIndicator
 
 var timeEnemyHealthVisible := Time.get_ticks_msec()
 
 func _init() -> void:
 	DamageManager.healthChange.connect(onHealthChange.bind())
+	StageManager.checkpointCompleted.connect(onCheckpointCompleted.bind())
 
 func _ready() -> void:
 	enemyAvatar.visible = false
@@ -42,3 +44,6 @@ func onHealthChange(characterType: Character.Type, currentHealth: int, maxHealth
 
 func onComboReset(points: int) -> void:
 	scoreIndicator.updateScore(points)
+
+func onCheckpointCompleted() -> void:
+	goIndicator.startFlickering()

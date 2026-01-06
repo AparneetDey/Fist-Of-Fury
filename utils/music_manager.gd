@@ -17,11 +17,13 @@ var audioStream : AudioStream = null
 func _process(_delta: float) -> void:
 	if audioStream != null:
 		MusicStreamPlayer.stream = audioStream
+		MusicStreamPlayer.stream.loop = true
 		MusicStreamPlayer.play()
 
 func play(music: Music):
 	if MusicStreamPlayer.is_node_ready():
 		MusicStreamPlayer.stream = MUSIC_MAP[music]
+		MusicStreamPlayer.stream.loop = true
 		MusicStreamPlayer.play()
 	else:
 		audioStream = MUSIC_MAP[music]

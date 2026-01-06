@@ -93,6 +93,7 @@ func onReceiveDamage(damage : int, direction : Vector2, _hitType: DamageReceiver
 		EntityManager.spawnSpark.emit(position)
 		EntityManager.deathEnemy.emit()
 		SoundPlayer.play(SoundManager.Sound.GRUNT)
+		DamageManager.heavyBlowReceived.emit()
 	else:
 		velocity = Vector2.ZERO
 		state = State.HURT
