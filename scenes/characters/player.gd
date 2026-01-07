@@ -24,6 +24,7 @@ func handleInput() -> void:
 		var direction := Input.get_vector("left", "right", "up", "down")
 		velocity = direction*Speed
 	if canAttack() and Input.is_action_just_pressed("attack"):
+		velocity = Vector2.ZERO
 		if HasKnife:
 			state = State.THROW
 		elif HasGun:

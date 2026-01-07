@@ -9,6 +9,7 @@ const GROUND_FRICTION := 50
 @export var DurationPrepAttackTime : int
 @export var player : Player
 
+var assignedDoorIndex := -1
 var knockbackForce := Vector2.ZERO
 var timeSinceLastAttacked := Time.get_ticks_msec()
 var timeSinceVulnerable := Time.get_ticks_msec()
