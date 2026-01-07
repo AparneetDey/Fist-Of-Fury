@@ -6,6 +6,7 @@ const AVATARMAP := {
 	Character.Type.THUG: preload("res://assets/art/ui/avatars/avatar-thug.png"),
 	Character.Type.BOUNCER: preload("res://assets/art/ui/avatars/avatar-boss.png")
 }
+const OPTIONS_SCREEN_PREFAB := preload("res://scenes/ui/options_screen.tscn")
 
 @export var DurationEnemyHealthVisible : int
 
@@ -17,6 +18,7 @@ const AVATARMAP := {
 @onready var goIndicator := $UIControls/GoIndicator
 
 var timeEnemyHealthVisible := Time.get_ticks_msec()
+var optionsScreen : Control = null
 
 func _init() -> void:
 	DamageManager.healthChange.connect(onHealthChange.bind())
@@ -31,6 +33,21 @@ func _process(_delta: float) -> void:
 	if enemyHealthBar.visible and (Time.get_ticks_msec() - timeEnemyHealthVisible) > DurationEnemyHealthVisible:
 		enemyAvatar.visible = false
 		enemyHealthBar.visible = false
+	handleInput()
+
+func handleInput() -> void:
+	if Input.is_action_just_pressed("ui_cancel"):
+		if optionsScreen == null:
+			optionsScreen = OPTIONS_SCREEN_PREFAB.instantiate()
+			add_child(optionsScreen)
+			optionsScreen.exit.connect(unpause)
+			get_tree().paused = true
+		else:
+			unpause()
+
+func unpause() -> void:
+	optionsScreen.queue_free()
+	get_tree().paused = false
 
 func onHealthChange(characterType: Character.Type, currentHealth: int, maxHealth: int) -> void:
 	if characterType == Character.Type.PLAYER:

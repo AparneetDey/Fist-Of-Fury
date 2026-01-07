@@ -1,15 +1,24 @@
 class_name OptionsScreen
 extends Control
 
-@onready var musicVolume := $Background/MarginContainer/VBoxContainer/MusicVolume
-@onready var soundVolume := $Background/MarginContainer/VBoxContainer/SoundVolume
-@onready var shakeToggle := $Background/MarginContainer/VBoxContainer/ShakeToggle
-@onready var returnButton := $Background/MarginContainer/VBoxContainer/ReturnButton
+signal exit
+
+@onready var musicVolume : RangePicker = $Background/MarginContainer/VBoxContainer/MusicVolume
+@onready var soundVolume : RangePicker = $Background/MarginContainer/VBoxContainer/SoundVolume
+@onready var shakeToggle : TogglePicker = $Background/MarginContainer/VBoxContainer/ShakeToggle
+@onready var returnButton : LabelPicker = $Background/MarginContainer/VBoxContainer/ReturnButton
 @onready var activables := [musicVolume, soundVolume, shakeToggle, returnButton]
 
 var currentSelectedIndex := 0
 
 func _ready() -> void:
+	musicVolume.setValue(OptionsManager.musicVolume)
+	soundVolume.setValue(OptionsManager.sfxVolume)
+	shakeToggle.setValue(OptionsManager.isScreenshakeEnabled as int)
+	musicVolume.valueChanged.connect(onMusicVolumeChanged.bind())
+	soundVolume.valueChanged.connect(onSoundVolumeChanged.bind())
+	shakeToggle.valueChanged.connect(onShakeValueChanged.bind())
+	returnButton.press.connect(onReturnPressed.bind())
 	refresh()
 
 func _process(_delta: float) -> void:
@@ -26,3 +35,16 @@ func handleInput() -> void:
 	if Input.is_action_just_pressed("up"):
 		currentSelectedIndex = clamp(currentSelectedIndex - 1, 0, activables.size() - 1)
 		refresh()
+
+func onMusicVolumeChanged(value: int) -> void:
+	OptionsManager.handleMusicVolume(value)
+
+func onSoundVolumeChanged(value: int) -> void:
+	OptionsManager.handleSFXVolume(value)
+
+func onShakeValueChanged(value: int) -> void:
+	OptionsManager.handleShakeToggle(value == 1)
+
+func onReturnPressed() -> void:
+	print("exit")
+	exit.emit()

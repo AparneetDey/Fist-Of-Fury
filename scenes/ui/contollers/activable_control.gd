@@ -1,6 +1,8 @@
 class_name ActivableControl
 extends HBoxContainer
 
+signal valueChanged(value: int)
+
 @export var text : String
 @export var defaultColor : Color
 @export var activeColor : Color
@@ -14,7 +16,6 @@ var isActive = false
 
 func _ready() -> void:
 	label.text = text.to_upper()
-	setValue(currentValue)
 
 func setActive(active: bool) -> void:
 	isActive = active
@@ -23,6 +24,7 @@ func setActive(active: bool) -> void:
 
 func setValue(value: int) -> void:
 	currentValue = clamp(value, minValue, maxValue)
+	valueChanged.emit(currentValue)
 	refresh()
 
 func refresh() -> void:
