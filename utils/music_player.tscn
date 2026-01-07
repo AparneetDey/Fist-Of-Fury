@@ -6,4 +6,5 @@
 script = ExtResource("1_tdgcm")
 
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 bus = &"Music"

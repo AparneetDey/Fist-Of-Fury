@@ -18,5 +18,6 @@ func _process(_delta: float) -> void:
 		isShaking = false
 
 func onHeavyBlowRecieved() -> void:
-	isShaking = true
-	timeStartShaking = Time.get_ticks_msec()
+	if OptionsManager.isScreenshakeEnabled:
+		isShaking = true
+		timeStartShaking = Time.get_ticks_msec()
