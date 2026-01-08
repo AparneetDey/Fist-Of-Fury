@@ -7,6 +7,7 @@ const AVATARMAP := {
 	Character.Type.BOUNCER: preload("res://assets/art/ui/avatars/avatar-boss.png")
 }
 const OPTIONS_SCREEN_PREFAB := preload("res://scenes/ui/options_screen.tscn")
+const DEATH_SCREEN_PREFAB := preload("res://scenes/ui/death_screen.tscn")
 
 @export var DurationEnemyHealthVisible : int
 
@@ -18,7 +19,8 @@ const OPTIONS_SCREEN_PREFAB := preload("res://scenes/ui/options_screen.tscn")
 @onready var goIndicator := $UIControls/GoIndicator
 
 var timeEnemyHealthVisible := Time.get_ticks_msec()
-var optionsScreen : Control = null
+var optionsScreen : OptionsScreen = null
+var deathScreen : DeathScreen = null
 
 func _init() -> void:
 	DamageManager.healthChange.connect(onHealthChange.bind())
@@ -38,6 +40,9 @@ func _process(_delta: float) -> void:
 func onHealthChange(characterType: Character.Type, currentHealth: int, maxHealth: int) -> void:
 	if characterType == Character.Type.PLAYER:
 		playerHealthBar.refresh(currentHealth, maxHealth)
+		if currentHealth == 0 and deathScreen ==null:
+			deathScreen = DEATH_SCREEN_PREFAB.instantiate()
+			add_child(deathScreen)
 	else:
 		enemyAvatar.texture = AVATARMAP[characterType]
 		enemyHealthBar.refresh(currentHealth, maxHealth)
