@@ -13,6 +13,11 @@ func _ready() -> void:
 	timer.timeout.connect(onTimeOut.bind())
 	refresh()
 
+func _process(_delta: float) -> void:
+	if currentCount < countdownStart and (Input.is_action_just_pressed("attack") or Input.is_action_just_pressed("jump")):
+		DamageManager.onRevive.emit()
+		queue_free()
+
 func refresh() -> void:
 	countdownLabel.text = str(currentCount)
 

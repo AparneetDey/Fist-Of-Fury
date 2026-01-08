@@ -1,6 +1,8 @@
 class_name Player
 extends Character
 
+const REVIVE_HEIGHT := 80
+
 @export var DurationBetweenLastSuccessfulHit : int
 
 @onready var enemySlots : Array = $EnemySlots.get_children()
@@ -10,6 +12,7 @@ var timeSinceLastSuccessfulHit := Time.get_ticks_msec()
 func _ready() -> void:
 	super._ready()
 	animAttacks = ["punch", "punch_alt", "kick", "round_kick"]
+	DamageManager.onRevive.connect(onPlayerRevive.bind())
 
 func _process(delta: float) -> void:
 	super._process(delta)
@@ -84,3 +87,8 @@ func freeSlot(enemy: BasicEnemy) -> void:
 	
 	if targetSlot.size() == 1:
 		targetSlot[0].freeUp()
+
+func onPlayerRevive() -> void:
+	currentHealth = MaxHealth
+	state = State.JUMP
+	height = REVIVE_HEIGHT
