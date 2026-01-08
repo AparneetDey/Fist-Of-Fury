@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://c4ad0806f8smx" path="res://scenes/characters/thug_enemy.tscn" id="6_px02y"]
 
 [node name="Stage-02-Bar" instance=ExtResource("1_hr86m")]
+music = 3
 
 [node name="PlayerStartPosition" parent="." index="0"]
 position = Vector2(25, 50)

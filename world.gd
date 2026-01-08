@@ -9,6 +9,7 @@ const PLAYER_PREFAB := preload("res://scenes/characters/player.tscn")
 @onready var actorsContainer := $ActorsContainer
 @onready var camera := $Camera
 @onready var stageContainers := $StageContainer
+@onready var stageTransition : StageTransition = $UI/UIControls/StageTransition
 
 var currentStageIndex := -1
 var isCameraLocked := false
@@ -20,7 +21,7 @@ func _ready() -> void:
 	cameraInitialPosition = camera.position
 	StageManager.checkpointStart.connect(onCheckpointStart.bind())
 	StageManager.checkpointCompleted.connect(onCheckpointCompleted.bind())
-	StageManager.stageCompleted.connect(loadNextStage.bind())
+	StageManager.stageInterim.connect(loadNextStage.bind())
 	loadNextStage()
 
 func _process(_delta: float) -> void:
@@ -33,6 +34,8 @@ func _process(_delta: float) -> void:
 		actorsContainer.player = player
 		player.position = stage.getPlayerPosition()
 		camera.position = cameraInitialPosition
+		stageTransition.endTransition()
+	
 	if player and not isCameraLocked and player.position.x > camera.position.x:
 		camera.position.x = player.position.x
 

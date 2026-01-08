@@ -12,12 +12,13 @@ const GAME_OVER_PREFAB := preload("res://scenes/ui/game_over_screen.tscn")
 
 @export var DurationEnemyHealthVisible : int
 
-@onready var playerHealthBar := $UIControls/PlayerHealthBar
+@onready var playerHealthBar : HealthBar = $UIControls/PlayerHealthBar
 @onready var enemyAvatar := $UIControls/EnemyAvatar
-@onready var enemyHealthBar := $UIControls/EnemyHealthBar
-@onready var comboIndicator := $UIControls/ComboIndicator
-@onready var scoreIndicator := $UIControls/ScoreIndicator
-@onready var goIndicator := $UIControls/GoIndicator
+@onready var enemyHealthBar : HealthBar = $UIControls/EnemyHealthBar
+@onready var comboIndicator : ComboIndicator = $UIControls/ComboIndicator
+@onready var scoreIndicator : ScoreIndicator = $UIControls/ScoreIndicator
+@onready var goIndicator : FlickeringLabel = $UIControls/GoIndicator
+@onready var stageTransition : StageTransition = $UIControls/StageTransition
 
 var timeEnemyHealthVisible := Time.get_ticks_msec()
 var optionsScreen : OptionsScreen = null
@@ -27,6 +28,7 @@ var gameOverScreen : GameOverScreen = null
 func _init() -> void:
 	DamageManager.healthChange.connect(onHealthChange.bind())
 	StageManager.checkpointCompleted.connect(onCheckpointCompleted.bind())
+	StageManager.stageCompleted.connect(onStageCompleted.bind())
 
 func _ready() -> void:
 	enemyAvatar.visible = false
@@ -78,3 +80,6 @@ func onComboReset(points: int) -> void:
 
 func onCheckpointCompleted(_checkpoint: Checkpoint) -> void:
 	goIndicator.startFlickering()
+
+func onStageCompleted() -> void:
+	stageTransition.startTransition()
