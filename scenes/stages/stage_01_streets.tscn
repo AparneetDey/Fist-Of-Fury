@@ -18,6 +18,9 @@
 [node name="Stage-01-Streets" instance=ExtResource("1_fa25f")]
 music = 2
 
+[node name="PlayerStartPosition" parent="." index="0"]
+position = Vector2(356, 52)
+
 [node name="MainBackground" parent="Backgrounds" index="0"]
 texture = ExtResource("2_tmnxn")
 
@@ -36,6 +39,12 @@ z_as_relative = false
 position = Vector2(452, 0)
 texture = ExtResource("5_7tft4")
 centered = false
+
+[node name="CollisionShape2D" parent="WorldColliders/StaticBody2D" index="0"]
+position = Vector2(304, 22)
+
+[node name="CollisionShape2D" parent="WorldColliders/StaticBody2D/StaticBody2D" index="0"]
+position = Vector2(304, 75)
 
 [node name="Checkpoint" parent="Checkpoints" index="0" instance=ExtResource("3_4fdwm")]
 position = Vector2(80, 0)

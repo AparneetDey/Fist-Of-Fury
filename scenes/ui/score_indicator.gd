@@ -27,13 +27,16 @@ func refresh() -> void:
 	text = str(displayedScore)
 
 func updateScore(points: int) -> void:
-	realScore += int((points * (points + 1)) / 2.0)
-	startUpdate()
+	addScore(int((points * (points + 1)) / 2.0))
 
 func onPlayerRevive() -> void:
-	realScore = max(0, realScore - PointsPerLife)
+	addScore(-PointsPerLife)
+
+func addScore(points: int) -> void:
+	realScore = max(0, realScore + points)
 	startUpdate()
 
 func startUpdate() -> void:
 	priorScore = displayedScore
 	timeSinceUpdatingScore = Time.get_ticks_msec()
+	refresh()

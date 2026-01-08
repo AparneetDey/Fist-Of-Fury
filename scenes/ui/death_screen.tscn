@@ -14,7 +14,7 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 script = ExtResource("1_njuei")
-countdownStart = 3
+countdownStart = 5
 
 [node name="Border" type="ColorRect" parent="."]
 layout_mode = 2

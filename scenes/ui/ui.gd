@@ -8,6 +8,7 @@ const AVATARMAP := {
 }
 const OPTIONS_SCREEN_PREFAB := preload("res://scenes/ui/options_screen.tscn")
 const DEATH_SCREEN_PREFAB := preload("res://scenes/ui/death_screen.tscn")
+const GAME_OVER_PREFAB := preload("res://scenes/ui/game_over_screen.tscn")
 
 @export var DurationEnemyHealthVisible : int
 
@@ -21,6 +22,7 @@ const DEATH_SCREEN_PREFAB := preload("res://scenes/ui/death_screen.tscn")
 var timeEnemyHealthVisible := Time.get_ticks_msec()
 var optionsScreen : OptionsScreen = null
 var deathScreen : DeathScreen = null
+var gameOverScreen : GameOverScreen = null
 
 func _init() -> void:
 	DamageManager.healthChange.connect(onHealthChange.bind())
@@ -40,9 +42,10 @@ func _process(_delta: float) -> void:
 func onHealthChange(characterType: Character.Type, currentHealth: int, maxHealth: int) -> void:
 	if characterType == Character.Type.PLAYER:
 		playerHealthBar.refresh(currentHealth, maxHealth)
-		if currentHealth == 0 and deathScreen ==null:
+		if currentHealth == 0 and deathScreen == null:
 			deathScreen = DEATH_SCREEN_PREFAB.instantiate()
 			add_child(deathScreen)
+			deathScreen.gameOver.connect(onGameOver.bind())
 	else:
 		enemyAvatar.texture = AVATARMAP[characterType]
 		enemyHealthBar.refresh(currentHealth, maxHealth)
@@ -64,8 +67,14 @@ func unpause() -> void:
 	optionsScreen.queue_free()
 	get_tree().paused = false
 
+func onGameOver() -> void:
+	if gameOverScreen == null:
+		gameOverScreen = GAME_OVER_PREFAB.instantiate()
+		add_child(gameOverScreen)
+		gameOverScreen.setScore(scoreIndicator.realScore)
+
 func onComboReset(points: int) -> void:
 	scoreIndicator.updateScore(points)
 
-func onCheckpointCompleted() -> void:
+func onCheckpointCompleted(_checkpoint: Checkpoint) -> void:
 	goIndicator.startFlickering()

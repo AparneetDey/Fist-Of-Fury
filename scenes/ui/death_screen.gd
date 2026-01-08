@@ -1,6 +1,8 @@
 class_name DeathScreen
 extends MarginContainer
 
+signal  gameOver
+
 @export var countdownStart : int
 
 @onready var timer := $Timer
@@ -26,4 +28,5 @@ func onTimeOut() -> void:
 		currentCount -= 1
 		refresh()
 	else:
+		gameOver.emit()
 		queue_free()

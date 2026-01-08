@@ -37,5 +37,5 @@ func onPlayerEnter(_player : Player) -> void:
 func onEnemyDeath() -> void:
 	activeEnemyCounter -= 1
 	if activeEnemyCounter == 0 and enemyData.size() == 0:
-		StageManager.checkpointCompleted.emit()
+		StageManager.checkpointCompleted.emit(self)
 		queue_free()
