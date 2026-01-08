@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cvjtvpq7ml81h"]
+[gd_scene load_steps=15 format=3 uid="uid://cvjtvpq7ml81h"]
 
 [ext_resource type="PackedScene" uid="uid://cwxa520uqekpk" path="res://scenes/stages/stage.tscn" id="1_fa25f"]
 [ext_resource type="Texture2D" uid="uid://ct7splt52hfwe" path="res://assets/art/backgrounds/street-background.png" id="2_tmnxn"]
@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://bpgrtmwe4k3n4" path="res://scenes/props/barrel.tscn" id="7_sf8j7"]
 [ext_resource type="PackedScene" uid="uid://cwkrxsyfkfu7a" path="res://scenes/props/door.tscn" id="8_7tft4"]
 [ext_resource type="PackedScene" uid="uid://b2qivoat431d3" path="res://scenes/characters/igor_boss.tscn" id="10_ef17o"]
+[ext_resource type="Texture2D" uid="uid://do5x0b4d1puh6" path="res://assets/art/backgrounds/window.png" id="13_6eonx"]
+[ext_resource type="Texture2D" uid="uid://c1vn3dgw7iv0m" path="res://assets/art/backgrounds/rails.png" id="14_ywehp"]
 
 [node name="Stage-01-Streets" instance=ExtResource("1_fa25f")]
 music = 2
@@ -129,6 +131,51 @@ contentType = 2
 [node name="Door" parent="Doors" index="0" node_paths=PackedStringArray("Enemies") instance=ExtResource("8_7tft4")]
 position = Vector2(220, 32)
 Enemies = [NodePath("../../Checkpoints/Checkpoint2/Enemies/BasicEnemy"), NodePath("../../Checkpoints/Checkpoint2/Enemies/BasicEnemy2"), NodePath("../../Checkpoints/Checkpoint2/Enemies/GoonEnemy5")]
+
+[node name="Window" type="Sprite2D" parent="Fixtures" index="0"]
+position = Vector2(14, 0)
+texture = ExtResource("13_6eonx")
+centered = false
+
+[node name="Window2" type="Sprite2D" parent="Fixtures" index="1"]
+position = Vector2(87, 0)
+texture = ExtResource("13_6eonx")
+centered = false
+
+[node name="Window3" type="Sprite2D" parent="Fixtures" index="2"]
+position = Vector2(178, 0)
+texture = ExtResource("13_6eonx")
+centered = false
+
+[node name="Window4" type="Sprite2D" parent="Fixtures" index="3"]
+position = Vector2(246, 0)
+texture = ExtResource("13_6eonx")
+centered = false
+
+[node name="Window5" type="Sprite2D" parent="Fixtures" index="4"]
+position = Vector2(312, 0)
+texture = ExtResource("13_6eonx")
+centered = false
+
+[node name="Window6" type="Sprite2D" parent="Fixtures" index="5"]
+position = Vector2(378, 0)
+texture = ExtResource("13_6eonx")
+centered = false
+
+[node name="Rails" type="Sprite2D" parent="Fixtures" index="6"]
+position = Vector2(0, 1)
+texture = ExtResource("14_ywehp")
+centered = false
+
+[node name="Rails2" type="Sprite2D" parent="Fixtures" index="7"]
+position = Vector2(120, 1)
+texture = ExtResource("14_ywehp")
+centered = false
+
+[node name="Rails3" type="Sprite2D" parent="Fixtures" index="8"]
+position = Vector2(296, 1)
+texture = ExtResource("14_ywehp")
+centered = false
 
 [editable path="Checkpoints/Checkpoint"]
 [editable path="Checkpoints/Checkpoint2"]

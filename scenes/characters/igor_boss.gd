@@ -86,6 +86,7 @@ func onReceiveDamage(damage : int, direction : Vector2, _hitType: DamageReceiver
 		knockbackForce = direction * KnockbackIntensity
 		return
 	ComboManager.registerHit.emit()
+	SoundPlayer.play(SoundManager.Sound.HIT1, true)
 	setHealth(currentHealth - damage)
 	if currentHealth <= 0:
 		state = State.FALL
