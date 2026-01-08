@@ -36,7 +36,6 @@ texture = ExtResource("5_7tft4")
 centered = false
 
 [node name="Checkpoint" parent="Checkpoints" index="0" instance=ExtResource("3_4fdwm")]
-visible = false
 position = Vector2(80, 0)
 
 [node name="BasicEnemy" parent="Checkpoints/Checkpoint/Enemies" index="0" instance=ExtResource("4_c8tl5")]
@@ -107,11 +106,11 @@ position = Vector2(111, 55)
 position = Vector2(11, -8)
 
 [node name="Checkpoint3" parent="Checkpoints" index="2" instance=ExtResource("3_4fdwm")]
-position = Vector2(345, 0)
+position = Vector2(325, 0)
 noSimultaneosEnemies = 1
 
 [node name="IgorBoss" parent="Checkpoints/Checkpoint3/Enemies" index="0" instance=ExtResource("10_ef17o")]
-position = Vector2(107, 57)
+position = Vector2(118, 60)
 
 [node name="Barrel" parent="Containers" index="0" instance=ExtResource("7_sf8j7")]
 position = Vector2(146, 48)

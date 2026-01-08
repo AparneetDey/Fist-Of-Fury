@@ -12,6 +12,7 @@ size = Vector2(6, 64)
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_tlwt5")
+metadata/_edit_horizontal_guides_ = [-146.0]
 
 [node name="UI" parent="." instance=ExtResource("2_dwbse")]
 
@@ -52,4 +53,4 @@ script = ExtResource("3_gbfbk")
 player = NodePath("Player")
 
 [node name="Player" parent="ActorsContainer" instance=ExtResource("2_fj7yv")]
-position = Vector2(43, 51)
+position = Vector2(314, 56)

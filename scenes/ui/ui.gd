@@ -35,6 +35,16 @@ func _process(_delta: float) -> void:
 		enemyHealthBar.visible = false
 	handleInput()
 
+func onHealthChange(characterType: Character.Type, currentHealth: int, maxHealth: int) -> void:
+	if characterType == Character.Type.PLAYER:
+		playerHealthBar.refresh(currentHealth, maxHealth)
+	else:
+		enemyAvatar.texture = AVATARMAP[characterType]
+		enemyHealthBar.refresh(currentHealth, maxHealth)
+		enemyAvatar.visible = true
+		enemyHealthBar.visible = true
+		timeEnemyHealthVisible = Time.get_ticks_msec()
+
 func handleInput() -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		if optionsScreen == null:
@@ -48,16 +58,6 @@ func handleInput() -> void:
 func unpause() -> void:
 	optionsScreen.queue_free()
 	get_tree().paused = false
-
-func onHealthChange(characterType: Character.Type, currentHealth: int, maxHealth: int) -> void:
-	if characterType == Character.Type.PLAYER:
-		playerHealthBar.refresh(currentHealth, maxHealth)
-	else:
-		enemyAvatar.texture = AVATARMAP[characterType]
-		enemyHealthBar.refresh(currentHealth, maxHealth)
-		enemyAvatar.visible = true
-		enemyHealthBar.visible = true
-		timeEnemyHealthVisible = Time.get_ticks_msec()
 
 func onComboReset(points: int) -> void:
 	scoreIndicator.updateScore(points)
