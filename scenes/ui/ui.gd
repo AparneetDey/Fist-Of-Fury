@@ -9,6 +9,7 @@ const AVATARMAP := {
 const OPTIONS_SCREEN_PREFAB := preload("res://scenes/ui/options_screen.tscn")
 const DEATH_SCREEN_PREFAB := preload("res://scenes/ui/death_screen.tscn")
 const GAME_OVER_PREFAB := preload("res://scenes/ui/game_over_screen.tscn")
+const GAME_COMPLETE_PREFAB := preload("res://scenes/ui/game_complete_screen.tscn")
 
 @export var DurationEnemyHealthVisible : int
 
@@ -23,12 +24,15 @@ const GAME_OVER_PREFAB := preload("res://scenes/ui/game_over_screen.tscn")
 var timeEnemyHealthVisible := Time.get_ticks_msec()
 var optionsScreen : OptionsScreen = null
 var deathScreen : DeathScreen = null
-var gameOverScreen : GameOverScreen = null
+var gameOverScreen : GameStateScreen = null
+var gameCompleteScreen : GameStateScreen = null
 
 func _init() -> void:
 	DamageManager.healthChange.connect(onHealthChange.bind())
 	StageManager.checkpointCompleted.connect(onCheckpointCompleted.bind())
 	StageManager.stageCompleted.connect(onStageCompleted.bind())
+	StageManager.gameComplete.connect(onGameComplete.bind())
+	StageManager.gameRestart.connect(onGameRestart.bind())
 
 func _ready() -> void:
 	enemyAvatar.visible = false
@@ -74,6 +78,18 @@ func onGameOver() -> void:
 		gameOverScreen = GAME_OVER_PREFAB.instantiate()
 		add_child(gameOverScreen)
 		gameOverScreen.setScore(scoreIndicator.realScore)
+
+func onGameComplete() -> void:
+	if gameCompleteScreen == null:
+		gameCompleteScreen = GAME_COMPLETE_PREFAB.instantiate()
+		add_child(gameCompleteScreen)
+		gameCompleteScreen.setScore(scoreIndicator.realScore)
+
+func onGameRestart() -> void:
+	if gameOverScreen != null:
+		gameOverScreen.queue_free()
+	if gameCompleteScreen != null:
+		gameCompleteScreen.queue_free()
 
 func onComboReset(points: int) -> void:
 	scoreIndicator.updateScore(points)

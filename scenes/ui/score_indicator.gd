@@ -12,6 +12,7 @@ var timeSinceUpdatingScore := Time.get_ticks_msec()
 func _ready() -> void:
 	displayedScore = 0
 	DamageManager.onRevive.connect(onPlayerRevive.bind())
+	StageManager.gameRestart.connect(onGameRestart.bind())
 	refresh()
 
 func _process(_delta: float) -> void:
@@ -31,6 +32,12 @@ func updateScore(points: int) -> void:
 
 func onPlayerRevive() -> void:
 	addScore(-PointsPerLife)
+
+func onGameRestart() -> void:
+	displayedScore = 0
+	realScore = 0
+	priorScore = 0
+	refresh()
 
 func addScore(points: int) -> void:
 	realScore = max(0, realScore + points)

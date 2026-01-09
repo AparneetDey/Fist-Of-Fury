@@ -13,6 +13,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	comboCounter = 0
+	DamageManager.onRevive.connect(onPlayerRevive.bind())
 	refresh()
 
 func _process(_delta: float) -> void:
@@ -30,4 +31,8 @@ func refresh() -> void:
 func onAttackHit() -> void:
 	comboCounter += 1
 	timeSinceComboTimeOut = Time.get_ticks_msec()
+	refresh()
+
+func onPlayerRevive() -> void:
+	comboCounter = 0
 	refresh()

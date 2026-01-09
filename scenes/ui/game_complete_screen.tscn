@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ndrkupp2u50w"]
+
+[ext_resource type="PackedScene" uid="uid://dvqrj3fg3hj4k" path="res://scenes/ui/game_state_screen.tscn" id="1_1skhj"]
+
+[node name="GameCompleteScreen" instance=ExtResource("1_1skhj")]
+
+[node name="GameStateLabel" parent="Background/MarginContainer/Contents" index="0"]
+theme_override_colors/font_color = Color(0, 0.903856, 0.39241087, 1)
+text = "FINISHED!"

@@ -1,63 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dvqrj3fg3hj4k"]
+[gd_scene load_steps=2 format=3 uid="uid://bjube5l6x8a2c"]
 
-[ext_resource type="Script" uid="uid://dufisu1uupwej" path="res://scenes/ui/game_over_screen.gd" id="1_bllgf"]
-[ext_resource type="Theme" uid="uid://cm4gy0knt1fmc" path="res://gui_theme.tres" id="1_dnrai"]
-[ext_resource type="PackedScene" uid="uid://ckrirsjkqx5kg" path="res://scenes/ui/score_indicator.tscn" id="3_xra47"]
+[ext_resource type="PackedScene" uid="uid://dvqrj3fg3hj4k" path="res://scenes/ui/game_state_screen.tscn" id="1_dnrai"]
 
-[node name="GameOverScreen" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_bllgf")
+[node name="GameOverScreen" instance=ExtResource("1_dnrai")]
 
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.078431375, 0.078431375, 0.078431375, 1)
-
-[node name="MarginContainer" type="MarginContainer" parent="Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="Contents" type="VBoxContainer" parent="Background/MarginContainer"]
-layout_mode = 2
-
-[node name="GameOverLabel" type="Label" parent="Background/MarginContainer/Contents"]
-layout_mode = 2
-theme = ExtResource("1_dnrai")
-theme_override_colors/font_color = Color(0.9137255, 0.09411765, 0, 1)
-theme_override_font_sizes/font_size = 12
-text = "GAME OVER"
-horizontal_alignment = 1
-
-[node name="ScoreSection" type="HBoxContainer" parent="Background/MarginContainer/Contents"]
-layout_mode = 2
-alignment = 1
-
-[node name="ScoreLabel" type="Label" parent="Background/MarginContainer/Contents/ScoreSection"]
-layout_mode = 2
-theme = ExtResource("1_dnrai")
-text = "SCORE:"
-
-[node name="ScoreIndicator" parent="Background/MarginContainer/Contents/ScoreSection" instance=ExtResource("3_xra47")]
-layout_mode = 2
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 2.0
-one_shot = true
-autostart = true
+[node name="GameStateLabel" parent="Background/MarginContainer/Contents" index="0"]
+theme_override_colors/font_color = Color(0.8666667, 0.105882354, 0, 1)
+text = "GAME OVER!"
