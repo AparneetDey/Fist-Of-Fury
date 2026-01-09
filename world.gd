@@ -11,7 +11,7 @@ const PLAYER_PREFAB := preload("res://scenes/characters/player.tscn")
 @onready var stageContainers := $StageContainer
 @onready var stageTransition : StageTransition = $UI/UIControls/StageTransition
 
-var currentStageIndex := 0
+var currentStageIndex := -1
 var isCameraLocked := false
 var isStageReadyForLoading := false
 var player : Player = null
@@ -52,6 +52,7 @@ func loadNextStage() -> void:
 		StageManager.gameComplete.emit()
 
 func onGameRestart() -> void:
+	print("restart")
 	currentStageIndex = -1
 	loadNextStage()
 

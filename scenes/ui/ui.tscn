@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ce01gc7jecnyt"]
+[gd_scene load_steps=11 format=3 uid="uid://ce01gc7jecnyt"]
 
 [ext_resource type="Script" uid="uid://cf6bq80f1jvgd" path="res://scenes/ui/ui.gd" id="1_g5kmx"]
 [ext_resource type="Texture2D" uid="uid://c2qx4dqty47gq" path="res://assets/art/ui/avatars/avatar-punk.png" id="1_u7n8c"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cxfu7n651hfmx" path="res://scenes/ui/flickering_texture.tscn" id="7_jcn1r"]
 [ext_resource type="Texture2D" uid="uid://c8rqjpgnmg7me" path="res://assets/art/ui/go-go-go.png" id="8_uegxj"]
 [ext_resource type="PackedScene" uid="uid://b760uwrmaqwqq" path="res://scenes/ui/stage_transition.tscn" id="9_uegxj"]
+[ext_resource type="Theme" uid="uid://cm4gy0knt1fmc" path="res://gui_theme.tres" id="10_y220t"]
 
 [node name="UI" type="CanvasLayer"]
 process_mode = 3
@@ -97,5 +98,66 @@ stretch_mode = 2
 
 [node name="StageTransition" parent="UIControls" instance=ExtResource("9_uegxj")]
 layout_mode = 1
+
+[node name="KeyBinds" type="Control" parent="UIControls"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MovementLabel" type="Label" parent="UIControls/KeyBinds"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -6.0
+offset_right = 52.0
+grow_vertical = 0
+theme = ExtResource("10_y220t")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "W/A/S/D"
+uppercase = true
+
+[node name="JumpLabel" type="Label" parent="UIControls/KeyBinds"]
+layout_mode = 1
+offset_right = 52.0
+offset_bottom = 6.0
+theme = ExtResource("10_y220t")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "JUMP"
+
+[node name="OptionLabel" type="Label" parent="UIControls/KeyBinds"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -52.0
+offset_bottom = 6.0
+grow_horizontal = 0
+theme = ExtResource("10_y220t")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "ESC"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="AttackLabel" type="Label" parent="UIControls/KeyBinds"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -52.0
+offset_top = -6.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("10_y220t")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "RIGHT CLICK/K"
+uppercase = true
 
 [editable path="UIControls/EnemyHealthBar"]

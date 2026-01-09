@@ -90,6 +90,8 @@ func onGameRestart() -> void:
 		gameOverScreen.queue_free()
 	if gameCompleteScreen != null:
 		gameCompleteScreen.queue_free()
+	if optionsScreen != null:
+		unpause()
 
 func onComboReset(points: int) -> void:
 	scoreIndicator.updateScore(points)

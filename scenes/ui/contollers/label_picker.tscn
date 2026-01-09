@@ -5,3 +5,6 @@
 
 [node name="LabelPicker" instance=ExtResource("1_qy7tq")]
 script = ExtResource("2_3kc00")
+
+[node name="Label" parent="." index="0"]
+horizontal_alignment = 1

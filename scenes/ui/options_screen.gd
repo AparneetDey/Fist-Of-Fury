@@ -7,7 +7,8 @@ signal exit
 @onready var soundVolume : RangePicker = $Background/MarginContainer/VBoxContainer/SoundVolume
 @onready var shakeToggle : TogglePicker = $Background/MarginContainer/VBoxContainer/ShakeToggle
 @onready var returnButton : LabelPicker = $Background/MarginContainer/VBoxContainer/ReturnButton
-@onready var activables := [musicVolume, soundVolume, shakeToggle, returnButton]
+@onready var restartButton : LabelPicker = $Background/MarginContainer/VBoxContainer/RestartButton
+@onready var activables := [musicVolume, soundVolume, shakeToggle, restartButton, returnButton]
 
 var currentSelectedIndex := 0
 
@@ -19,6 +20,7 @@ func _ready() -> void:
 	soundVolume.valueChanged.connect(onSoundVolumeChanged.bind())
 	shakeToggle.valueChanged.connect(onShakeValueChanged.bind())
 	returnButton.press.connect(onReturnPressed.bind())
+	restartButton.press.connect(onRestartPressed.bind())
 	refresh()
 
 func _process(_delta: float) -> void:
@@ -50,3 +52,6 @@ func onShakeValueChanged(value: int) -> void:
 
 func onReturnPressed() -> void:
 	exit.emit()
+
+func onRestartPressed() -> void:
+	StageManager.gameRestart.emit()

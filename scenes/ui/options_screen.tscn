@@ -46,9 +46,6 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "OPTIONS"
 horizontal_alignment = 1
 
-[node name="Spacer" type="Control" parent="Background/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
 [node name="MusicVolume" parent="Background/MarginContainer/VBoxContainer" instance=ExtResource("2_8sxsw")]
 layout_mode = 2
 text = "Music"
@@ -61,8 +58,10 @@ text = "Sound"
 layout_mode = 2
 text = "Shake"
 
-[node name="Spacer2" type="Control" parent="Background/MarginContainer/VBoxContainer"]
+[node name="RestartButton" parent="Background/MarginContainer/VBoxContainer" instance=ExtResource("4_eckhm")]
 layout_mode = 2
+alignment = 1
+text = "Restart"
 
 [node name="ReturnButton" parent="Background/MarginContainer/VBoxContainer" instance=ExtResource("4_eckhm")]
 layout_mode = 2

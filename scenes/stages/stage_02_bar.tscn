@@ -17,7 +17,7 @@
 music = 3
 
 [node name="PlayerStartPosition" parent="." index="0"]
-position = Vector2(500, 50)
+position = Vector2(25, 50)
 
 [node name="MainBackground" parent="Backgrounds" index="0"]
 texture = ExtResource("2_n3pyb")
