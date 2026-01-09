@@ -1,6 +1,6 @@
 extends Node
 
-var musicVolume := 3
+var musicVolume := 5
 var sfxVolume := 5
 var isScreenshakeEnabled := true
 

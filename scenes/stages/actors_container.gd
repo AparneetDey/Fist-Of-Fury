@@ -49,6 +49,7 @@ func onEnemySpawn(enemyData: EnemyData) -> void:
 	enemy.player = player
 	enemy.assignedDoorIndex = enemyData.doorIndex
 	if enemyData.doorIndex > -1:
+		print(doors[enemyData.doorIndex])
 		enemy.handleAssignedDoor(doors[enemyData.doorIndex])
 	add_child(enemy)
 

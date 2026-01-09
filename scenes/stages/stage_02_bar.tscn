@@ -28,7 +28,6 @@ texture = ExtResource("3_px02y")
 centered = false
 
 [node name="Checkpoint" parent="Checkpoints" index="0" instance=ExtResource("3_2urpg")]
-visible = false
 position = Vector2(82, 0)
 noSimultaneosEnemies = 3
 
@@ -151,7 +150,6 @@ position = Vector2(-17, 62)
 position = Vector2(34, -15)
 
 [node name="Checkpoint4" parent="Checkpoints" index="2" instance=ExtResource("3_2urpg")]
-visible = false
 position = Vector2(321, 0)
 noSimultaneosEnemies = 3
 

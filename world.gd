@@ -52,7 +52,6 @@ func loadNextStage() -> void:
 		StageManager.gameComplete.emit()
 
 func onGameRestart() -> void:
-	print("restart")
 	currentStageIndex = -1
 	loadNextStage()
 

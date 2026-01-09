@@ -128,7 +128,7 @@ offset_right = 52.0
 offset_bottom = 6.0
 theme = ExtResource("10_y220t")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "JUMP"
+text = "SPACE"
 
 [node name="OptionLabel" type="Label" parent="UIControls/KeyBinds"]
 layout_mode = 1
@@ -157,7 +157,8 @@ grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("10_y220t")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "RIGHT CLICK/K"
+text = "RIGHT/K"
+horizontal_alignment = 2
 uppercase = true
 
 [editable path="UIControls/EnemyHealthBar"]
